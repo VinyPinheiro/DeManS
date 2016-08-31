@@ -5,16 +5,17 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "siga"
-  config.vm.box_url = "https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.1.0/centos-7.0-x86_64.box"
+    config.vm.box = "capgama"
+    config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
 
-  config.vm.network :private_network, ip: "192.168.2.20"
-  config.vm.synced_folder "./", "/vagrant"
-  config.vm.provision :puppet do |puppet|
-	puppet.manifests_path = "puppet/manifests"
-    puppet.options = ['--verbose']
-  	puppet.module_path = "puppet/modules"
-  end
+    config.vm.network :private_network, ip: "192.168.2.30"
+    config.vm.synced_folder "./", "/vagrant"
+    config.vm.provision :puppet do |puppet|
+	    puppet.manifests_path = "puppet/manifests"
+        puppet.options = ['--verbose']
+        puppet.module_path = "puppet/modules"
+
+    end
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
