@@ -13,6 +13,7 @@ birthdate DATE NOT NULL,
 password VARCHAR(200) NOT NULL,
 phone VARCHAR(15) NOT NULL,
 dad_phone VARCHAR(15) NOT NULL,
+approved ENUM('Y','N') NOT NULL DEFAULT 'N',
 CONSTRAINT member_PK PRIMARY KEY(id)
 )ENGINE = InnoDb DEFAULT CHARSET utf8;
 
