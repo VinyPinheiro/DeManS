@@ -7,7 +7,7 @@ class tomcat {
 
   file {"/var/lib/tomcat7/webapps/system":
   	ensure => "link",
-  	target => "/vagrant/system",
+  	target => "/vagrant/system/WebContent",
   	require => Package["tomcat7"],
   	notify => Service["tomcat7"],
   }
