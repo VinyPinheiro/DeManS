@@ -45,8 +45,9 @@ public class UF {
 			boolean inArray = false;
 			int index = -1;
 	
-			for (int i = 0; i < UF.STATES.length / 2; i++) {
-				if (UF.STATES[i][0] == initials) {
+			initials = initials.toUpperCase();
+			for (int i = 0; i < UF.STATES.length; i++) {
+				if (UF.STATES[i][0].equals(initials)) {
 					inArray = true;
 					index = i;
 					break;
