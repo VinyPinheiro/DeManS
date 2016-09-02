@@ -115,4 +115,33 @@ public class AddressTest extends TestCase {
 		}
 	}
 
+	public void testNullCity(){
+		try {
+			address = new Address(street, number, complement, zipcode, null, uf);
+			fail();
+		} catch (AddressException e) {
+			
+		}
+	}
+	
+	public void testLargeCityString(){
+		try {
+			address = new Address(street, number, complement, zipcode, 
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+					uf);
+			fail();
+		} catch (AddressException e) {
+			
+		}
+	}
+
+
+	public void testNullUf(){
+		try {
+			address = new Address(street, number, complement, zipcode, city, null);
+			fail();
+		} catch (AddressException e) {
+			
+		}
+	}
 }
