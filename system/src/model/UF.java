@@ -25,18 +25,19 @@ public class UF {
 	private String state = null;
 	private String initials = null;
 
-	public UF(final String state) {
-		this.state = state;
-	}
-
-	public String getState() {
-		return state;
+	/**
+	 * Constructor method
+	 * @param initials String with 2 characters with the initials of state
+	 * @throws UfException Invalid initials or initials not exists
+	 */
+	public UF(final String initials) throws UfException {
+		setState(initials);
 	}
 
 	/**
 	 * Method to set state and initials with the parameter initials
 	 * @param initials String with 2 characters with the initials of state
-//	 * @throws UfException Invalid initials or initials not exists
+	 * @throws UfException Invalid initials or initials not exists
 	 */
 	private void setState(String initials) throws UfException {
 		if(initials.length() == 2)
@@ -66,5 +67,9 @@ public class UF {
 
 	public String getInitials() {
 		return initials;
+	}
+
+	public String getState() {
+		return state;
 	}
 }
