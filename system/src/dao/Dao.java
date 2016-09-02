@@ -20,7 +20,7 @@ public abstract class Dao {
 	 * @throws SQLException
 	 *             failed in connection
 	 */
-	private Connection getMySqlConnection() throws SQLException {
+	private static Connection getMySqlConnection() throws SQLException {
 
 		Connection connection = null; // connection variable
 
@@ -51,7 +51,7 @@ public abstract class Dao {
 	 * @return boolean true if success else false  
 	 */
 	@SuppressWarnings("finally")
-	private boolean closeConnection() {
+	private static boolean closeConnection() {
 		boolean isClosed = false;
 		
         try {
@@ -70,7 +70,7 @@ public abstract class Dao {
 	 * @return ResultSet with the return of the database
 	 * @throws SQLException
 	 */
-	protected ResultSet executeQuery(String query) throws SQLException
+	protected static ResultSet executeQuery(String query) throws SQLException
 	{
 		// Open Connection
 		Connection connection = getMySqlConnection();
