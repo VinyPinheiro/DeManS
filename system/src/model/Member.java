@@ -6,6 +6,7 @@
 
 package model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import exception.AddressException;
@@ -19,6 +20,7 @@ public class Member {
 	public static final String NULL_NAME = "Nome não pode ser nulo";
 	public static final String LARGE_NAME = "Nome não pode ter mais que 100 caracteres";
 	public static final String NULL_BIRTHDATE = "Data de nascimento não pode ser nulo";
+	public static final String INVALID_BIRTHDATE = "Membro muito novo";
 	public static final String NULL_PASSWORD = "Senha não pode ser nulo";
 	public static final String PASSWORD_NOT_IN_RANGE = "Senha deve conter de 6 à 20 caracteres";
 	public static final String NULL_ADDRESS = "Endereço não pode ser nulo";
@@ -105,7 +107,16 @@ public class Member {
 
 	public void setBirthdate(Date birthdate) throws MemberException {
 		if (birthdate != null) {
-			this.birthdate = birthdate;
+			Calendar minimouAge = Calendar.getInstance();
+			minimouAge.add(Calendar.YEAR, -12);
+
+			if (birthdate.before(minimouAge.getTime())) {
+				this.birthdate = birthdate;
+
+			} else {
+				throw new MemberException(Member.INVALID_BIRTHDATE);
+			}
+
 		} else {
 			throw new MemberException(Member.NULL_BIRTHDATE);
 		}
@@ -133,7 +144,7 @@ public class Member {
 
 	public void setPhone(String phone) throws MemberException {
 		if (phone != null) {
-			final String regex = "^/([1-9]{2}/)[2-9][0-9]{4,5}(/-|)[0-9]{4}$";
+			final String regex = "^\\([1-9]{2}\\)[2-9][0-9]{4,5}(\\-|)[0-9]{4}$";
 			if (phone.matches(regex)) {
 				this.phone = phone;
 			} else {
@@ -150,7 +161,7 @@ public class Member {
 
 	public void setDad_phone(String dad_phone) throws MemberException {
 		if (dad_phone != null) {
-			final String regex = "^/([1-9]{2}/)[2-9][0-9]{4,5}(/-|)[0-9]{4}$";
+			final String regex = "^\\([1-9]{2}\\)[2-9][0-9]{4,5}(\\-|)[0-9]{4}$";
 			if (dad_phone.matches(regex)) {
 				this.dad_phone = dad_phone;
 			} else {
