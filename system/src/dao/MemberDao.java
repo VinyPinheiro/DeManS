@@ -57,15 +57,93 @@ public class MemberDao extends Dao {
 		return member;
 	}
 
-	public void register() throws SQLException, AddressException, UfException, MemberException, DaoException {
-		if (MemberDao.findById(getMember().getId()) != null) {
-			final String queryUF = "INSERT INTO UF('" + getMember().getAddress().getUf().getInitials() + "','"
-					+ getMember().getAddress().getUf().getState() + "')";
-			Dao.executeQuery(queryUF);
+	/**
+	 * Method to verify if UF exists, if not exists then register that
+	 * 
+	 * @param initials
+	 *            String with 2 characters with the initials of state
+	 * @throws UfException
+	 * @throws SQLException
+	 */
+	private void registerIfUfExists(String initial) throws UfException, SQLException {
+		final UF uf = new UF(initial);
+		final String query = "SELECT COUNT(*) FROM UF WHERE initial = '" + initial + "'";
 
-			final String queryCity = "INSERT INTO CITY(NULL,'" + getMember().getAddress().getCity() + "','"
-					+ getMember().getAddress().getUf().getInitials() + "')";
-			Dao.executeQuery(queryCity);
+		final ResultSet resultset = Dao.executeQuery(query);
+
+		if (!resultset.next()) {
+			registerUf(uf);
+		} else {
+			// Nothing to do.
+		}
+	}
+
+	/**
+	 * Method to persist UF
+	 * 
+	 * @param uf
+	 *            UF object
+	 * @throws SQLException
+	 */
+	private void registerUf(UF uf) throws SQLException {
+		final String queryUF = "INSERT INTO UF('" + getMember().getAddress().getUf().getInitials() + "','"
+				+ getMember().getAddress().getUf().getState() + "')";
+		Dao.executeQuery(queryUF);
+	}
+
+	/**
+	 * Method to verify if City exists, if not exists then register that
+	 * @param address Address object 
+	 * @return integer code of the city
+	 * @throws UfException
+	 * @throws SQLException
+	 */
+	private Integer registerIfCityExists(Address address) throws UfException, SQLException {
+		final String query = "SELECT code FROM CITY WHERE name = '" + address.getCity() + "'";
+
+		final ResultSet resultset = Dao.executeQuery(query);
+
+		int code = -1;
+
+		if (resultset.next()) {
+			code = resultset.getInt("code");
+		} else {
+			code = registerCity(address);
+		}
+
+		return code;
+	}
+
+	/**
+	 * Method to persist a city
+	 * @param address Address Object
+	 * @return integer code of the city
+	 * @throws NumberFormatException not return the last id
+	 * @throws SQLException
+	 */
+	private int registerCity(Address address) throws NumberFormatException, SQLException {
+		final String query = "INSERT INTO CITY VALUES(NULL, '" + address.getCity() + "','"
+				+ address.getUf().getInitials() + "')";
+		
+		final ResultSet resultset = Dao.executeQuery(query);
+		
+		
+		return Integer.parseInt(resultset.getString("last_insert_id()"));
+	}
+
+	/**
+	 * Method to register a Member
+	 * @throws SQLException
+	 * @throws AddressException
+	 * @throws MemberException
+	 * @throws DaoException
+	 * @throws UfException
+	 */
+	public void register() throws SQLException, AddressException, MemberException, DaoException, UfException {
+		if (MemberDao.findById(getMember().getId()) != null) {
+			registerIfUfExists(getMember().getAddress().getUf().getInitials());
+
+			int cityCode = registerIfCityExists(getMember().getAddress());
 
 		} else {
 			throw new DaoException(MemberDao.EXISTS_ID, MemberDao.CLASS_NAME);
