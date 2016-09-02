@@ -3,8 +3,8 @@ CREATE DATABASE DeManS_db;
 
 use DeManS_db;
 
-CREATE USER 'DeManS@localhost' IDENTIFIED BY 'demolay';
-GRANT ALL PRIVILEGES ON DeManS_db.* TO 'DeManS@localhost';
+CREATE USER 'DeManS@%' IDENTIFIED BY 'demolay';
+GRANT ALL PRIVILEGES ON DeManS_db.* TO 'DeManS@%';
 
 CREATE TABLE MEMBER (
 id INT NOT NULL,
