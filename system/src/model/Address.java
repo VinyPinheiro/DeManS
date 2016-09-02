@@ -13,6 +13,7 @@ public class Address {
 	public static final String NULL_STREET = "Rua não pode ser nulo";
 	public static final String LARGE_STREET = "Rua não pode ter mais que 100 caracteres";
 	public static final String NULL_NUMBER = "Numero não pode ser nulo";
+	public static final String NEGATIVE_NUMBER = "Numero não pode ser negativo";
 	public static final String LARGE_COMPLEMENT = "Complemento não pode ter mais que 50 caracteres";
 	public static final String NULL_ZIPCODE = "CEP não pode ser nulo";
 	public static final String INVALID_ZIPCODE_FORMAT = "CEP não está no formato solicitado xxxxx-xxx";
@@ -34,7 +35,7 @@ public class Address {
 	 * @param street
 	 *            not null String and no more 100 characters
 	 * @param number
-	 *            not null Integer
+	 *            not null Integer and only number than 0
 	 * @param complement
 	 *            no more 50 characters
 	 * @param zipcode
@@ -79,7 +80,11 @@ public class Address {
 
 	private void setNumber(final Integer number) throws AddressException {
 		if (number != null) {
-			this.number = number;
+			if (number >= 0) {
+				this.number = number;
+			} else {
+				throw new AddressException(Address.NEGATIVE_NUMBER);
+			}
 		} else {
 			throw new AddressException(Address.NULL_NUMBER);
 		}
@@ -90,10 +95,14 @@ public class Address {
 	}
 
 	private void setComplement(final String complement) throws AddressException {
-		if (complement.length() <= 100) {
-			this.complement = complement;
+		if (complement != null) {
+			if (complement.length() <= 50) {
+				this.complement = complement;
+			} else {
+				throw new AddressException(Address.LARGE_COMPLEMENT);
+			}
 		} else {
-			throw new AddressException(Address.LARGE_COMPLEMENT);
+			this.complement = null;
 		}
 	}
 
