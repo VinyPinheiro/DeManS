@@ -20,7 +20,8 @@ import model.Address;;
 public class MemberDao extends Dao {
 
 	private static final String CLASS_NAME = "MemberDao";
-	private static final String NULL_MEMBER = "Erro, objeto de Membro não pode ser nullo";
+	private static final String NULL_MEMBER = "Erro, objeto de Membro não pode ser nullo.";
+	private static final String EXISTS_ID = "Impossível registrar, id já cadastrada.";
 	private Member member;
 
 	public MemberDao(Member member) throws DaoException {
@@ -54,6 +55,21 @@ public class MemberDao extends Dao {
 			member = null;
 		}
 		return member;
+	}
+
+	public void register() throws SQLException, AddressException, UfException, MemberException, DaoException {
+		if (MemberDao.findById(getMember().getId()) != null) {
+			final String queryUF = "INSERT INTO UF('" + getMember().getAddress().getUf().getInitials() + "','"
+					+ getMember().getAddress().getUf().getState() + "')";
+			Dao.executeQuery(queryUF);
+
+			final String queryCity = "INSERT INTO CITY(NULL,'" + getMember().getAddress().getCity() + "','"
+					+ getMember().getAddress().getUf().getInitials() + "')";
+			Dao.executeQuery(queryCity);
+
+		} else {
+			throw new DaoException(MemberDao.EXISTS_ID, MemberDao.CLASS_NAME);
+		}
 	}
 
 	/**
