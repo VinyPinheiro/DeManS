@@ -8,6 +8,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public abstract class Dao {
@@ -16,18 +17,21 @@ public abstract class Dao {
 	 * Method to try open connection with database
 	 * 
 	 * @return null if failed else connection object
-	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 *             failed in connection
 	 */
-	protected java.sql.Connection getConexaoMySQL() throws ClassNotFoundException, SQLException {
+	private Connection getMySqlConnection() throws SQLException {
 
 		Connection connection = null; // connection variable
 
 		// Load Default JDBC Driver
 
 		final String driverName = "com.mysql.jdbc.Driver";
-		Class.forName(driverName);
+		try {
+			Class.forName(driverName);
+		} catch (ClassNotFoundException e) {
+			assert false;
+		}
 
 		// Configuration connection
 
@@ -42,4 +46,43 @@ public abstract class Dao {
 
 	}
 
+	/**
+	 * Method to close connection
+	 * @return boolean true if success else false  
+	 */
+	@SuppressWarnings("finally")
+	private boolean closeConnection() {
+		boolean isClosed = false;
+		
+        try {
+            getMySqlConnection().close();
+            isClosed =  true;
+        } catch (SQLException e) {
+        	isClosed =  false;
+        } finally {
+			return isClosed;
+		}
+    }
+	
+	/**
+	 * Method to prepare and execute query
+	 * @param query String with command to execute in database
+	 * @return ResultSet with the return of the database
+	 * @throws SQLException
+	 */
+	protected ResultSet executeQuery(String query) throws SQLException
+	{
+		// Open Connection
+		Connection connection = getMySqlConnection();
+		
+		// Execute query
+		java.sql.PreparedStatement prepareStatement = connection.prepareStatement(query);
+		ResultSet queryResult = prepareStatement.executeQuery();
+		
+		// Close connection
+		closeConnection();
+		
+		return queryResult;
+		
+	}
 }
