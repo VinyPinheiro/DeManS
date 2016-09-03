@@ -93,8 +93,10 @@ public class MemberDao extends Dao {
 
 	/**
 	 * Method to verify if City exists, if not exists then register that
-	 * @param address Address object 
-	 * @return integer code of the city
+	 * 
+	 * @param address
+	 *            Address object
+	 * @return integer code of the city or -1 if has error
 	 * @throws UfException
 	 * @throws SQLException
 	 */
@@ -116,23 +118,24 @@ public class MemberDao extends Dao {
 
 	/**
 	 * Method to persist a city
-	 * @param address Address Object
+	 * 
+	 * @param address
+	 *            Address Object
 	 * @return integer code of the city
-	 * @throws NumberFormatException not return the last id
+	 * @throws NumberFormatException
+	 *             not return the last id
 	 * @throws SQLException
 	 */
 	private int registerCity(Address address) throws NumberFormatException, SQLException {
 		final String query = "INSERT INTO CITY VALUES(NULL, '" + address.getCity() + "','"
 				+ address.getUf().getInitials() + "')";
-		
-		final ResultSet resultset = Dao.executeQuery(query);
-		
-		
-		return Integer.parseInt(resultset.getString("last_insert_id()"));
+
+		return lastId(query);
 	}
 
 	/**
 	 * Method to register a Member
+	 * 
 	 * @throws SQLException
 	 * @throws AddressException
 	 * @throws MemberException
@@ -144,10 +147,40 @@ public class MemberDao extends Dao {
 			registerIfUfExists(getMember().getAddress().getUf().getInitials());
 
 			int cityCode = registerIfCityExists(getMember().getAddress());
+			int addresCode = registerAddress(getMember().getAddress(), cityCode);
 
 		} else {
 			throw new DaoException(MemberDao.EXISTS_ID, MemberDao.CLASS_NAME);
 		}
+	}
+
+	/**
+	 * Method to persist data from address
+	 * @param address Address object with the address to persist
+	 * @param cityCode code of the city save in CITY table
+	 * @return code generated for the address inserted
+	 * @throws SQLException
+	 */
+	private int registerAddress(Address address, int cityCode) throws SQLException {
+		final String query = "INSERT INTO ADDRESS VALUES(NULL, '" + address.getStreet() + "'," + address.getNumber()
+				+ ",'" + address.getComplement() + "','" + address.getZipcode() + "'," + cityCode + ")";
+
+		return lastId(query);
+	}
+
+	/**
+	 * Method to execute query with return last id inserted
+	 * 
+	 * @param query
+	 *            Insert sql command
+	 * @return last id inserted
+	 * @throws SQLException
+	 *             query not compile with success
+	 */
+	private int lastId(String query) throws SQLException {
+		final ResultSet resultset = Dao.executeQuery(query);
+
+		return Integer.parseInt(resultset.getString("last_insert_id()"));
 	}
 
 	/**
