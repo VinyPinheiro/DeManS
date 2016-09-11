@@ -1,5 +1,6 @@
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -25,8 +26,7 @@ public class MemberTest extends TestCase {
 	protected void setUp() throws UfException, AddressException, ParseException {
 		id = 44199;
 		name = "Vinicius Pinheiro da Silva Correa";
-		DateFormat dt_format = DateFormat.getDateInstance();
-		birthdate = dt_format.parse("14/02/1995");
+		birthdate = new SimpleDateFormat("dd/MM/yyyy").parse("14/02/1995");
 		password = "1234567";
 		phone = "(61)98145-8085";
 		dad_phone = "(61)98145-8085";
