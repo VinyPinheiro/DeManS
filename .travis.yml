@@ -1,0 +1,11 @@
+language: java
+
+script: mvn package -Popenshift
+jdk:
+  - openjdk7
+
+before_install:
+  - cd system
+
+notifications:
+  - never
