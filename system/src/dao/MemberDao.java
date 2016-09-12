@@ -147,8 +147,14 @@ public class MemberDao extends Dao {
 			registerIfUfExists(getMember().getAddress().getUf().getInitials());
 
 			int cityCode = registerIfCityExists(getMember().getAddress());
-			int addresCode = registerAddress(getMember().getAddress(), cityCode);
+			int addressCode = registerAddress(getMember().getAddress(), cityCode);
 
+			final String query = "INSERT INTO MEMBER VALUES(" + getMember().getId() + ", '" + getMember().getName()
+					+ "','" + getMember().getBirthdate() + "','" + getMember().getPassword() + "','"
+					+ getMember().getPhone() + "','" + getMember().getDad_phone() + "'," + addressCode + ")";
+			
+			Dao.executeQuery(query);
+			
 		} else {
 			throw new DaoException(MemberDao.EXISTS_ID, MemberDao.CLASS_NAME);
 		}
@@ -156,8 +162,11 @@ public class MemberDao extends Dao {
 
 	/**
 	 * Method to persist data from address
-	 * @param address Address object with the address to persist
-	 * @param cityCode code of the city save in CITY table
+	 * 
+	 * @param address
+	 *            Address object with the address to persist
+	 * @param cityCode
+	 *            code of the city save in CITY table
 	 * @return code generated for the address inserted
 	 * @throws SQLException
 	 */
