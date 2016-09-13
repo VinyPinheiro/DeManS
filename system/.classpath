@@ -23,12 +23,12 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="/home/viny/vagrant/CapGama/system/WebContent/WEB-INF/lib/mysql-connector-java-5.1.39-bin.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="target/DeMans-0.0.1/WEB-INF/lib/mysql-connector-java-5.1.39-bin.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
