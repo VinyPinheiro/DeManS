@@ -11,6 +11,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.mysql.jdbc.Statement;
+
 public abstract class Dao {
 
 	/**
@@ -83,6 +85,32 @@ public abstract class Dao {
 		closeConnection();
 		
 		return queryResult;
+		
+	}
+	
+	/**
+	 * Method to prepare and execute query
+	 * @param query String with command to execute in database
+	 * @return ResultSet with the return of the database
+	 * @throws SQLException
+	 */
+	protected static long executeUpdate(String query) throws SQLException
+	{
+		// Open Connection
+		Connection connection = getMySqlConnection();
+		
+		// Execute query
+		java.sql.PreparedStatement prepareStatement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+		prepareStatement.executeUpdate();
+		ResultSet generatedKeys = prepareStatement.getGeneratedKeys();
+		long lastId = 0;
+		if(generatedKeys.next()) {
+			lastId = generatedKeys.getLong(1);
+		}
+		// Close connection
+		closeConnection();
+		
+		return lastId;
 		
 	}
 }

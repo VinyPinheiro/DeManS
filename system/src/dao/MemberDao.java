@@ -8,6 +8,7 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 import exception.AddressException;
 import exception.DaoException;
@@ -40,20 +41,23 @@ public class MemberDao extends Dao {
 	public static Member findById(Integer id) throws SQLException, AddressException, UfException, MemberException {
 		final String query = "SELECT MEMBER.id, MEMBER.name, MEMBER.birthdate, MEMBER.password, "
 				+ "MEMBER.phone, MEMBER.dad_phone, ADDRESS.street, ADDRESS.number, ADDRESS.complement, "
-				+ "ADDRESS.zipcode, CITY.name, CITY.initials FROM "
-				+ "MEMBER INNER JOIN ADDRESS ON MEMBER.address_code = ADDRESS.code " + "WHERE MEMBER.id = " + id + "";
+				+ "ADDRESS.zip_code, CITY.name as city_name, CITY.initials FROM "
+				+ "MEMBER INNER JOIN ADDRESS ON MEMBER.address_code = ADDRESS.code "
+				+ "INNER JOIN CITY ON CITY.code = ADDRESS.city_code "
+				+ "WHERE MEMBER.id = " + id + "";
 		ResultSet data = Dao.executeQuery(query);
 
 		Member member = null;
 		if (data.next()) {
 			UF uf = new UF(data.getString("initials"));
 			Address address = new Address(data.getString("street"), data.getInt("number"), data.getString("complement"),
-					data.getString("zipcode"), data.getString("city"), uf);
+					data.getString("zip_code"), data.getString("city_name"), uf);
 			member = new Member(id, data.getString("name"), data.getDate("birthdate"), data.getString("password"),
 					data.getString("phone"), data.getString("dad_phone"), address);
 		} else {
 			member = null;
 		}
+System.out.println(member);
 		return member;
 	}
 
@@ -67,10 +71,9 @@ public class MemberDao extends Dao {
 	 */
 	private void registerIfUfExists(String initial) throws UfException, SQLException {
 		final UF uf = new UF(initial);
-		final String query = "SELECT COUNT(*) FROM UF WHERE initial = '" + initial + "'";
+		final String query = "SELECT * FROM UF WHERE initials = '" + initial + "'";
 
 		final ResultSet resultset = Dao.executeQuery(query);
-
 		if (!resultset.next()) {
 			registerUf(uf);
 		} else {
@@ -86,9 +89,9 @@ public class MemberDao extends Dao {
 	 * @throws SQLException
 	 */
 	private void registerUf(UF uf) throws SQLException {
-		final String queryUF = "INSERT INTO UF('" + getMember().getAddress().getUf().getInitials() + "','"
+		final String queryUF = "INSERT INTO UF VALUES('" + getMember().getAddress().getUf().getInitials() + "','"
 				+ getMember().getAddress().getUf().getState() + "')";
-		Dao.executeQuery(queryUF);
+		Dao.executeUpdate(queryUF);
 	}
 
 	/**
@@ -143,17 +146,25 @@ public class MemberDao extends Dao {
 	 * @throws UfException
 	 */
 	public void register() throws SQLException, AddressException, MemberException, DaoException, UfException {
-		if (MemberDao.findById(getMember().getId()) != null) {
+		if (MemberDao.findById(getMember().getId()) == null) {
 			registerIfUfExists(getMember().getAddress().getUf().getInitials());
 
 			int cityCode = registerIfCityExists(getMember().getAddress());
+System.out.println(cityCode);
 			int addressCode = registerAddress(getMember().getAddress(), cityCode);
+System.out.println(addressCode);
 
+			final String birthdate = (getMember().getBirthdate().getYear() + 1900) + "-"
+					+ (1+getMember().getBirthdate().getMonth()) + "-"
+					+ getMember().getBirthdate().getDate();
+
+System.out.println(birthdate);
+			
 			final String query = "INSERT INTO MEMBER VALUES(" + getMember().getId() + ", '" + getMember().getName()
-					+ "','" + getMember().getBirthdate() + "','" + getMember().getPassword() + "','"
+					+ "','" + birthdate + "','" + getMember().getPassword() + "','"
 					+ getMember().getPhone() + "','" + getMember().getDad_phone() + "'," + addressCode + ")";
 			
-			Dao.executeQuery(query);
+			Dao.executeUpdate(query);
 			
 		} else {
 			throw new DaoException(MemberDao.EXISTS_ID, MemberDao.CLASS_NAME);
@@ -187,9 +198,9 @@ public class MemberDao extends Dao {
 	 *             query not compile with success
 	 */
 	private int lastId(String query) throws SQLException {
-		final ResultSet resultset = Dao.executeQuery(query);
+		final long resultset = Dao.executeUpdate(query);
 
-		return Integer.parseInt(resultset.getString("last_insert_id()"));
+		return Integer.parseInt(String.valueOf(resultset));
 	}
 
 	/**

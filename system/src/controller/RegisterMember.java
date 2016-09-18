@@ -32,6 +32,11 @@ import model.UF;
 public class RegisterMember extends HttpServlet {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Method to receive POST data and verify and send result to client
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -62,15 +67,33 @@ public class RegisterMember extends HttpServlet {
 				MemberDao member_dao = new MemberDao(member);
 				
 				member_dao.register();
-	
-				out.print("Certo");
-			} catch (MemberException | AddressException | UfException | 
-					NumberFormatException | ParseException | DaoException | SQLException e) {
-				final String error = "<script>alert('"+e.getMessage()+"');</script>";
+
+				final String error = "<script>alert(\"Cadastrado com Sucesso!\");</script>";
+				out.print(error);
+			} catch (MemberException e) {
+				final String error = "<script>alert(\""+e.getMessage()+"\");history.go(-1);</script>";
+				out.print(error);
+			} catch (NumberFormatException e) {
+				final String error = "<script>alert(\""+e.getMessage()+"\");history.go(-1);</script>";
+				out.print(error);
+			} catch (ParseException e) {
+				final String error = "<script>alert(\""+e.getMessage()+"\");history.go(-1);</script>";
+				out.print(error);
+			} catch (AddressException e) {
+				final String error = "<script>alert(\""+e.getMessage()+"\");history.go(-1);</script>";
+				out.print(error);
+			} catch (UfException e) {
+				final String error = "<script>alert(\""+e.getMessage()+"\");history.go(-1);</script>";
+				out.print(error);
+			} catch (DaoException e) {
+				final String error = "<script>alert(\""+e.getMessage()+"\");history.go(-1);</script>";
+				out.print(error);
+			} catch (SQLException e) {
+				final String error = "<script>alert(\""+e.getMessage()+"\");history.go(-1);</script>";
 				out.print(error);
 			}
 		} else{
-			final String error = "<script>alert('Senhas Diferem');</script>";
+			final String error = "<script>alert(\"Senhas Diferem\");</script>";
 			out.print(error);
 		}
 	}
