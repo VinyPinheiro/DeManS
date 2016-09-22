@@ -9,6 +9,7 @@ package dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Vector;
 
 import exception.AddressException;
 import exception.DaoException;
@@ -27,6 +28,39 @@ public class MemberDao extends Dao {
 
 	public MemberDao(Member member) throws DaoException {
 		setMember(member);
+	}
+	
+	/**
+	 * Method to return all active members
+	 * @return Vector<Member> All active members
+	 * @throws SQLException
+	 * @throws UfException
+	 * @throws MemberException
+	 * @throws AddressException
+	 */
+	public static Vector<Member> activeMembers() throws SQLException, UfException, MemberException, AddressException{
+		final String query = "SELECT MEMBER.id, MEMBER.name, MEMBER.birthdate, MEMBER.password, "
+				+ "MEMBER.phone, MEMBER.dad_phone, MEMBER.degree, MEMBER.situation, ADDRESS.street, ADDRESS.number, ADDRESS.complement, "
+				+ "ADDRESS.zip_code, CITY.name as city_name, CITY.initials FROM "
+				+ "MEMBER INNER JOIN ADDRESS ON MEMBER.address_code = ADDRESS.code "
+				+ "INNER JOIN CITY ON CITY.code = ADDRESS.city_code " + "WHERE MEMBER.situation = 'Ativo'";
+		
+		ResultSet data = Dao.executeQuery(query);
+		
+		Vector<Member> members = new Vector<Member>();
+		while (data.next()) {
+			Member member = null;
+			UF uf = new UF(data.getString("initials"));
+			Address address = new Address(data.getString("street"), data.getInt("number"), data.getString("complement"),
+					data.getString("zip_code"), data.getString("city_name"), uf);
+			member = new Member(data.getInt("id"), data.getString("name"), data.getDate("birthdate"), data.getString("password"),
+					data.getString("phone"), data.getString("dad_phone"), address, data.getString("degree"),
+					data.getString("situation"));
+			
+			members.addElement(member);
+		}
+		
+		return members;
 	}
 
 	/**
