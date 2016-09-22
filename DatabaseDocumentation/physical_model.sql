@@ -41,8 +41,8 @@ password VARCHAR(200) NOT NULL,
 phone VARCHAR(15) NOT NULL,
 dad_phone VARCHAR(15) NOT NULL,
 address_code INT NOT NULL,
-degree Enum('Iniciático', 'DeMolay', 'Maçom') NOT NULL,
-situation Enum('Ativo', 'Irregular', 'Sênior') NULL,
+degree Enum('Iniciático', 'DeMolay', 'Maçom') NOT NULL DEFAULT 'Iniciático',
+situation Enum('Ativo', 'Irregular', 'Sênior') NOT NULL DEFAULT 'Ativo',
 CONSTRAINT member_address_FK FOREIGN KEY(address_code) REFERENCES ADDRESS (code),
 CONSTRAINT member_PK PRIMARY KEY(id)
 )ENGINE = InnoDb DEFAULT CHARSET utf8;
