@@ -29,7 +29,7 @@ public class Member {
 	public static final String INVALID_PHONE = "Telefone não esta no formato solicitado";
 	public static final String NULL_DAD_PHONE = "telefone do pai não pode ser nulo";
 	public static final String INVALID_DAD_PHONE = "telefone do pai não esta no formato solicitado";
-	public static final String INVALID_DEGREE = "Grau inválido, use apenas('Iniciático', 'DeMolay', 'Maçom')";
+	public static final String INVALID_DEGREE = "Grau invalido, use apenas('Iniciático', 'DeMolay', 'Maçom')";
 	public static final String INVALID_SITUATION = "Situação inválida, use apenas('Ativo', 'Irregular', 'Sênior')";
 
 	// Attributes
@@ -233,7 +233,7 @@ public class Member {
 	}
 
 	public void setDegree(String degree) throws MemberException {
-		final String[] options = { "Iniciático", "DeMolay", "Maçom" };
+		final String[] options = { "Inici�tico", "DeMolay", "Ma�om" };
 		if (Arrays.asList(options).contains(degree)) {
 			this.degree = degree;
 		} else {

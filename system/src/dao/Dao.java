@@ -38,9 +38,9 @@ public abstract class Dao {
 		// Configuration connection
 
 		final String SERVER_NAME = "127.0.0.1"; // Host
-		final String DATABASE = "DeManS_db"; // DatabaseName
+		final String DATABASE = "demans_db"; // DatabaseName
 		final String URL = "jdbc:mysql://" + SERVER_NAME + "/" + DATABASE;
-		final String USERNAME = "DeManS"; // UserName
+		final String USERNAME = "demans"; // UserName
 		final String PASSWORD = "demolay"; // Password
 		connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 

@@ -1,10 +1,10 @@
-DROP DATABASE IF EXISTS DeManS_db;
-CREATE DATABASE DeManS_db;
+﻿DROP DATABASE IF EXISTS DeManS_db;
+CREATE DATABASE demans_db;
 
-use DeManS_db;
+use demans_db;
 
-CREATE USER 'DeManS' IDENTIFIED BY 'demolay';
-GRANT ALL PRIVILEGES ON DeManS_db.* TO 'DeManS';
+CREATE USER 'demans' IDENTIFIED BY 'demolay';
+GRANT ALL PRIVILEGES ON demans_db.* TO 'demans';
 
 CREATE TABLE UF (
 initials VARCHAR(2) NOT NULL,
