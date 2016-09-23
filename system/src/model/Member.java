@@ -253,5 +253,10 @@ public class Member {
 			throw new MemberException(Member.INVALID_SITUATION);
 		}
 	}
+	
+	public boolean equals(Member obj)
+	{
+		return this.getId().equals(obj.getId());
+	}
 
 }

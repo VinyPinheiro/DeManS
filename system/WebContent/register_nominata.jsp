@@ -25,7 +25,7 @@
 </head>
 <body>
 
-	<form>
+	<form method="POST" action="register_nominata">
 		<fieldset>
 			<legend>Cadastro de Nominata para gestão subsequente</legend>
 	

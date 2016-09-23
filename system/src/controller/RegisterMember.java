@@ -68,7 +68,7 @@ public class RegisterMember extends HttpServlet {
 				
 				member_dao.register();
 
-				final String error = "<script>alert(\"Cadastrado com Sucesso!\");</script>";
+				final String error = "<script>alert(\"Cadastrado com Sucesso!\");location.href='index.html'</script>";
 				out.print(error);
 			} catch (MemberException e) {
 				final String error = "<script>alert(\""+e.getMessage()+"\");history.go(-1);</script>";
@@ -97,5 +97,4 @@ public class RegisterMember extends HttpServlet {
 			out.print(error);
 		}
 	}
-
 }
