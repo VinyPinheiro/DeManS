@@ -6,6 +6,7 @@
 <title>Login Success Page</title>
 </head>
 <body>
+<%@ include file="header.jsp" %>
 <%
 //allow access only if session exists
 String user = null;

@@ -5,6 +5,7 @@
 <title>Login Page</title>
 </head>
 <body>
+<%@ include file="header.jsp" %>
 
 <form action="LoginServlet" method="post">
 
