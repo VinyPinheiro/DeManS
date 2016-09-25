@@ -17,7 +17,7 @@
        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
            <ul class="nav navbar-nav navbar-right">
                <li class="active">
-                   <a href="/DeMans/register.html">Cadastrar</a>
+                   <a href="/DeMans/register.jsp">Cadastrar</a>
                </li>
                <li>
                    <a href="/DeMans/login.jsp">Entrar</a>

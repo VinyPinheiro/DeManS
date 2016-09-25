@@ -38,7 +38,7 @@ public class Login extends HttpServlet {
 			response.addCookie(userName);
 			response.sendRedirect("home.jsp");
 		}else{
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.html");
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
 			PrintWriter out= response.getWriter();
 			out.println("<font color=red>Either user name or password is wrong.</font>");
 			rd.include(request, response);
