@@ -57,7 +57,7 @@ public class MemberDao extends Dao {
 		} else {
 			member = null;
 		}
-System.out.println(member);
+		System.out.println(member);
 		return member;
 	}
 
