@@ -8,7 +8,6 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.Vector;
 
 import exception.AddressException;
@@ -218,21 +217,6 @@ public class MemberDao extends Dao {
 				+ ",'" + address.getComplement() + "','" + address.getZipcode() + "'," + cityCode + ")";
 
 		return lastId(query);
-	}
-
-	/**
-	 * Method to execute query with return last id inserted
-	 * 
-	 * @param query
-	 *            Insert sql command
-	 * @return last id inserted
-	 * @throws SQLException
-	 *             query not compile with success
-	 */
-	private int lastId(String query) throws SQLException {
-		final long resultset = Dao.executeUpdate(query);
-
-		return Integer.parseInt(String.valueOf(resultset));
 	}
 
 	/**
