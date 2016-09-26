@@ -22,7 +22,6 @@
 		    	}
 	    	}
     	}
-	  	
 	  	%>
 	  	<% if(logado == false){  %>
 			<a href="/DeMans/">Inicio</a> |

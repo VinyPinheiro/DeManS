@@ -42,7 +42,7 @@ public class Login extends HttpServlet {
 			if(member != null){
 				if(member.getPassword().equals(pwd)){
 					HttpSession session = request.getSession();
-					session.setAttribute("user", "Pankaj");
+					session.setAttribute("user", member.getName());
 					//setting session to expiry in 30 mins
 					session.setMaxInactiveInterval(30*60);
 					Cookie userName = new Cookie("user",request.getParameter("user"));
@@ -56,8 +56,21 @@ public class Login extends HttpServlet {
 				out.println("<font color=red>Either user name or password is wrong.</font>");
 				rd.include(request, response);
 			}
-		} catch (SQLException | AddressException | UfException | MemberException e) {
-			System.out.println("There was an error conneting to the server." + e);
+		} catch (SQLException sqlexception){
+			System.out.println("There was an error conneting to the server." + sqlexception);
+			
+			response.sendError(412);
+		} catch (AddressException addressException){
+			System.out.println("There was an error conneting to the server." + addressException);
+			
+			response.sendError(412);
+		} catch (UfException ufException){
+			System.out.println("There was an error conneting to the server." + ufException);
+			
+			response.sendError(412);
+		} catch (MemberException memberException) {
+		
+			System.out.println("There was an error conneting to the server." + memberException);
 			
 			response.sendError(412);
 		}
