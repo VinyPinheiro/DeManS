@@ -16,7 +16,6 @@ import model.Office;
 import model.UF;
 
 public class NominataTest extends TestCase {
-	private Vector<Office> offices;
 	private Member member1;
 	private Member member2;
 	private Member member3;
@@ -76,9 +75,7 @@ public class NominataTest extends TestCase {
 	public void testCreateNull2C() throws NominataException, OfficeException {
 		try {
 			Nominata nominata = new Nominata();
-			int i = 0;
-			nominata.addOffice(new Office(member1, Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS[i++]));
-			nominata.addOffice(new Office(member1, Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS[i]));
+			nominata.addOffice(new Office(Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS[2]));
 			fail();
 		} catch (Exception e) {
 		}
