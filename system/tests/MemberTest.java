@@ -22,6 +22,8 @@ public class MemberTest extends TestCase {
 	private String phone;
 	private String dad_phone;
 	private Address address;
+	private String degree;
+	private String situation;
 
 	protected void setUp() throws UfException, AddressException, ParseException {
 		id = 44199;
@@ -30,6 +32,8 @@ public class MemberTest extends TestCase {
 		password = "1234567";
 		phone = "(61)98145-8085";
 		dad_phone = "(61)98145-8085";
+		degree = "DeMolay";
+		situation = "Ativo";
 
 		String street = "Rua dos alveneiros";
 		Integer number = 25;
@@ -51,6 +55,21 @@ public class MemberTest extends TestCase {
 		assertEquals(member.getPhone(), phone);
 		assertEquals(member.getDad_phone(), dad_phone);
 		assertEquals(member.getAddress(), address);
+	}
+	
+
+	public void testCreateMemberWithDegreeAndSituation() throws MemberException {
+		member = new Member(id, name, birthdate, password, phone, dad_phone, address,degree,situation);
+
+		assertEquals(member.getId(), id);
+		assertEquals(member.getName(), name);
+		assertEquals(member.getBirthdate(), birthdate);
+		assertEquals(member.getPassword(), password);
+		assertEquals(member.getPhone(), phone);
+		assertEquals(member.getDad_phone(), dad_phone);
+		assertEquals(member.getAddress(), address);
+		assertEquals(member.getDegree(), degree);
+		assertEquals(member.getSituation(), situation);
 	}
 
 	public void testNullID() {
@@ -158,10 +177,26 @@ public class MemberTest extends TestCase {
 		} catch (MemberException e) {
 		}
 	}
-	
+
 	public void testNullAddress() {
 		try {
 			member = new Member(id, name, birthdate, password, phone, dad_phone, null);
+			fail();
+		} catch (MemberException e) {
+		}
+	}
+
+	public void testInvalidDegree() {
+		try {
+			member = new Member(id, name, birthdate, password, phone, dad_phone, address,"ciático",situation);
+			fail();
+		} catch (MemberException e) {
+		}
+	}
+
+	public void testInvalidsituation() {
+		try {
+			member = new Member(id, name, birthdate, password, phone, dad_phone, address,degree,"reg");
 			fail();
 		} catch (MemberException e) {
 		}

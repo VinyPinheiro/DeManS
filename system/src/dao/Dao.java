@@ -68,7 +68,7 @@ public abstract class Dao {
 	
 	/**
 	 * Method to prepare and execute query
-	 * @param query String with command to execute in database
+	 * @param query String with select command to execute in database
 	 * @return ResultSet with the return of the database
 	 * @throws SQLException
 	 */
@@ -90,7 +90,7 @@ public abstract class Dao {
 	
 	/**
 	 * Method to prepare and execute query
-	 * @param query String with command to execute in database
+	 * @param query String with insert, update and delete commands to execute in database
 	 * @return ResultSet with the return of the database
 	 * @throws SQLException
 	 */
@@ -112,5 +112,22 @@ public abstract class Dao {
 		
 		return lastId;
 		
+	}
+	
+
+
+	/**
+	 * Method to execute query with return last id inserted
+	 * 
+	 * @param query
+	 *            Insert sql command
+	 * @return last id inserted
+	 * @throws SQLException
+	 *             query not compile with success
+	 */
+	protected int lastId(String query) throws SQLException {
+		final long resultset = Dao.executeUpdate(query);
+
+		return Integer.parseInt(String.valueOf(resultset));
 	}
 }

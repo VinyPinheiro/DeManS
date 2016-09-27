@@ -8,7 +8,7 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
+import java.util.Vector;
 
 import exception.AddressException;
 import exception.DaoException;
@@ -28,6 +28,39 @@ public class MemberDao extends Dao {
 	public MemberDao(Member member) throws DaoException {
 		setMember(member);
 	}
+	
+	/**
+	 * Method to return all active members
+	 * @return Vector<Member> All active members
+	 * @throws SQLException
+	 * @throws UfException
+	 * @throws MemberException
+	 * @throws AddressException
+	 */
+	public static Vector<Member> activeMembers() throws SQLException, UfException, MemberException, AddressException{
+		final String query = "SELECT MEMBER.id, MEMBER.name, MEMBER.birthdate, MEMBER.password, "
+				+ "MEMBER.phone, MEMBER.dad_phone, MEMBER.degree, MEMBER.situation, ADDRESS.street, ADDRESS.number, ADDRESS.complement, "
+				+ "ADDRESS.zip_code, CITY.name as city_name, CITY.initials FROM "
+				+ "MEMBER INNER JOIN ADDRESS ON MEMBER.address_code = ADDRESS.code "
+				+ "INNER JOIN CITY ON CITY.code = ADDRESS.city_code " + "WHERE MEMBER.situation = 'Ativo'";
+		
+		ResultSet data = Dao.executeQuery(query);
+		
+		Vector<Member> members = new Vector<Member>();
+		while (data.next()) {
+			Member member = null;
+			UF uf = new UF(data.getString("initials"));
+			Address address = new Address(data.getString("street"), data.getInt("number"), data.getString("complement"),
+					data.getString("zip_code"), data.getString("city_name"), uf);
+			member = new Member(data.getInt("id"), data.getString("name"), data.getDate("birthdate"), data.getString("password"),
+					data.getString("phone"), data.getString("dad_phone"), address, data.getString("degree"),
+					data.getString("situation"));
+			
+			members.addElement(member);
+		}
+		
+		return members;
+	}
 
 	/**
 	 * 
@@ -40,11 +73,10 @@ public class MemberDao extends Dao {
 	 */
 	public static Member findById(Integer id) throws SQLException, AddressException, UfException, MemberException {
 		final String query = "SELECT MEMBER.id, MEMBER.name, MEMBER.birthdate, MEMBER.password, "
-				+ "MEMBER.phone, MEMBER.dad_phone, ADDRESS.street, ADDRESS.number, ADDRESS.complement, "
+				+ "MEMBER.phone, MEMBER.dad_phone, MEMBER.degree, MEMBER.situation, ADDRESS.street, ADDRESS.number, ADDRESS.complement, "
 				+ "ADDRESS.zip_code, CITY.name as city_name, CITY.initials FROM "
 				+ "MEMBER INNER JOIN ADDRESS ON MEMBER.address_code = ADDRESS.code "
-				+ "INNER JOIN CITY ON CITY.code = ADDRESS.city_code "
-				+ "WHERE MEMBER.id = " + id + "";
+				+ "INNER JOIN CITY ON CITY.code = ADDRESS.city_code " + "WHERE MEMBER.id = " + id + "";
 		ResultSet data = Dao.executeQuery(query);
 
 		Member member = null;
@@ -53,11 +85,11 @@ public class MemberDao extends Dao {
 			Address address = new Address(data.getString("street"), data.getInt("number"), data.getString("complement"),
 					data.getString("zip_code"), data.getString("city_name"), uf);
 			member = new Member(id, data.getString("name"), data.getDate("birthdate"), data.getString("password"),
-					data.getString("phone"), data.getString("dad_phone"), address);
+					data.getString("phone"), data.getString("dad_phone"), address, data.getString("degree"),
+					data.getString("situation"));
 		} else {
 			member = null;
 		}
-System.out.println(member);
 		return member;
 	}
 
@@ -150,19 +182,17 @@ System.out.println(member);
 			registerIfUfExists(getMember().getAddress().getUf().getInitials());
 
 			int cityCode = registerIfCityExists(getMember().getAddress());
-System.out.println(cityCode);
+
 			int addressCode = registerAddress(getMember().getAddress(), cityCode);
-System.out.println(addressCode);
 
 			final String birthdate = (getMember().getBirthdate().getYear() + 1900) + "-"
 					+ (1+getMember().getBirthdate().getMonth()) + "-"
 					+ getMember().getBirthdate().getDate();
-
-System.out.println(birthdate);
 			
 			final String query = "INSERT INTO MEMBER VALUES(" + getMember().getId() + ", '" + getMember().getName()
-					+ "','" + birthdate + "','" + getMember().getPassword() + "','"
-					+ getMember().getPhone() + "','" + getMember().getDad_phone() + "'," + addressCode + ")";
+					+ "','" + birthdate + "','" + getMember().getPassword() + "','" + getMember().getPhone() + "','" + 
+					getMember().getDad_phone() + "'," + addressCode + ",'" + getMember().getDegree() + "','" + 
+					getMember().getSituation() + "')";
 			
 			Dao.executeUpdate(query);
 			
@@ -186,21 +216,6 @@ System.out.println(birthdate);
 				+ ",'" + address.getComplement() + "','" + address.getZipcode() + "'," + cityCode + ")";
 
 		return lastId(query);
-	}
-
-	/**
-	 * Method to execute query with return last id inserted
-	 * 
-	 * @param query
-	 *            Insert sql command
-	 * @return last id inserted
-	 * @throws SQLException
-	 *             query not compile with success
-	 */
-	private int lastId(String query) throws SQLException {
-		final long resultset = Dao.executeUpdate(query);
-
-		return Integer.parseInt(String.valueOf(resultset));
 	}
 
 	/**

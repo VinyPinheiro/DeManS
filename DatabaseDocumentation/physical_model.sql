@@ -41,6 +41,31 @@ password VARCHAR(200) NOT NULL,
 phone VARCHAR(15) NOT NULL,
 dad_phone VARCHAR(15) NOT NULL,
 address_code INT NOT NULL,
-CONSTRAINT member_address_FK FOREIGN KEY(address_code) REFERENCES ADDRESS (code),
+degree Enum('Iniciático', 'DeMolay', 'Maçom') NOT NULL DEFAULT 'Iniciático',
+situation Enum('Ativo', 'Irregular', 'Sênior') NOT NULL DEFAULT 'Ativo',
+CONSTRAINT member_address_FK FOREIGN KEY(address_code) REFERENCES ADDRESS (code) ON UPDATE RESTRICT ON DELETE RESTRICT,
 CONSTRAINT member_PK PRIMARY KEY(id)
 )ENGINE = InnoDb DEFAULT CHARSET utf8;
+
+CREATE TABLE NOMINATA (
+code INT NOT NULL AUTO_INCREMENT,
+year INT NOT NULL,
+semester Enum('1','2') NOT NULL,
+CONSTRAINT nominata_PK PRIMARY KEY(code),
+CONSTRAINT nominata_UK UNIQUE(year,semester)
+)ENGINE = InnoDb DEFAULT CHARSET utf8;
+
+CREATE TABLE belongs (
+office Enum('Mestre Conselheiro', '1 Conselheiro', '2 Conselheiro', 'Tesoureiro',
+			'Escrivao', 'Orador', '1 Diacono', '2 Diacono', '1 Mordomo', '2 Mordomo', 'Hospitaleiro', 'Capelao',
+			'Porta Bandeira', 'Sentinela', 'Mestre de Cerimonias', '1 Preceptor', '2 Preceptor', '3 Preceptor',
+			'4 Preceptor', '5 Preceptor', '6 Preceptor', '7 Preceptor') NOT NULL,
+code INT NOT NULL,
+id INT NULL,
+CONSTRAINT belongs_UK UNIQUE(office,code),
+CONSTRAINT belongs1_UK UNIQUE(id,code),
+CONSTRAINT belongs_to_nominata_FK FOREIGN KEY(code) REFERENCES NOMINATA (code) ON UPDATE CASCADE ON DELETE CASCADE,
+CONSTRAINT member_belongs_FK FOREIGN KEY(id) REFERENCES MEMBER (id) ON UPDATE RESTRICT ON DELETE RESTRICT
+)ENGINE = InnoDb DEFAULT CHARSET utf8;
+
+
