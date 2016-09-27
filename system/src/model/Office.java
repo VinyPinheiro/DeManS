@@ -1,7 +1,6 @@
 package model;
 
 import java.util.Arrays;
-import java.util.Vector;
 
 import exception.OfficeException;
 
@@ -62,13 +61,16 @@ public class Office {
 		if (member != null) {
 			this.member = member;
 		} else {
-			if (this.office.equals(Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS[0])) {
+			if (this.office.equals(Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS[0]) ||
+					this.office.equals(Office.VALID_OFFICES[0])) {
 				throw new OfficeException(NULL_MC_MEMBER);
 			} else {
-				if (this.office.equals(Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS[1])) {
+				if (this.office.equals(Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS[1]) ||
+						this.office.equals(Office.VALID_OFFICES[1])) {
 					throw new OfficeException(NULL_1C_MEMBER);
 				} else {
-					if (this.office.equals(Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS[2])) {
+					if (this.office.equals(Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS[2]) ||
+							this.office.equals(Office.VALID_OFFICES[2])) {
 						throw new OfficeException(NULL_2C_MEMBER);
 					} else {
 						this.member = member;
@@ -83,7 +85,8 @@ public class Office {
 	}
 
 	private void setOffice(String office) throws OfficeException {
-		if (Arrays.asList(Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS).contains(office)) {
+		if (Arrays.asList(Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS).contains(office) || 
+				Arrays.asList(Office.VALID_OFFICES).contains(office)) {
 			this.office = office;
 		} else {
 			throw new OfficeException(INVALID_OFFICE);
