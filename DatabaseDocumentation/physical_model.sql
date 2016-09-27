@@ -57,8 +57,8 @@ CONSTRAINT nominata_UK UNIQUE(year,semester)
 
 CREATE TABLE belongs (
 office Enum('Mestre Conselheiro', '1 Conselheiro', '2 Conselheiro', 'Tesoureiro',
-			'Escrivão', 'Orador', '1 Diácono', '2 Diácono', '1 Mordomo', '2 Mordomo', 'Hospitaleiro', 'Capelão',
-			'Porta Bandeira', 'Sentinela', 'Mestre de Cerimônias', '1 Preceptor', '2 Preceptor', '3 Preceptor',
+			'Escrivao', 'Orador', '1 Diacono', '2 Diacono', '1 Mordomo', '2 Mordomo', 'Hospitaleiro', 'Capelao',
+			'Porta Bandeira', 'Sentinela', 'Mestre de Cerimonias', '1 Preceptor', '2 Preceptor', '3 Preceptor',
 			'4 Preceptor', '5 Preceptor', '6 Preceptor', '7 Preceptor') NOT NULL,
 code INT NOT NULL,
 id INT NULL,

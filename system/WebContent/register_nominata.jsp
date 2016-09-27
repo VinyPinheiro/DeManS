@@ -23,7 +23,7 @@
 </head>
 <body>
 
-	<form method="GET" action="registerNominata">
+	<form method="POST" action="registerNominata">
 		<fieldset>
 			<legend>Cadastro de Nominata para gestão subsequente</legend>
 	

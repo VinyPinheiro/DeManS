@@ -25,7 +25,7 @@ public class RegisterNominata extends HttpServlet {
 	/**
 	 * Method to receive POST data and verify and send result to client
 	 */
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 
@@ -67,7 +67,8 @@ public class RegisterNominata extends HttpServlet {
 								"Vá em editar nominata e selecione o semestre.'); history.go(-1);</script>";
 						out.print(error);
 					} else {
-
+						final String error = "<script>alert('Ouve um erro, tente novamente'); history.go(-1);</script>";
+						out.print(error);
 					}
 				}
 			}
