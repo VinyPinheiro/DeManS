@@ -22,9 +22,10 @@ public class NominataDao extends Dao {
 		setNominata(nominata);
 	}
 
-	public static Nominata findNominata(int code) throws SQLException, NominataException, OfficeException, AddressException, UfException, MemberException {
-		final String query = "SELECT NOMINATA.code,NOMINATA.semester, NOMINATA.year "
-				+ "FROM NOMINATA WHERE code = " + code;
+	public static Nominata findNominata(int code)
+			throws SQLException, NominataException, OfficeException, AddressException, UfException, MemberException {
+		final String query = "SELECT NOMINATA.code,NOMINATA.semester, NOMINATA.year " + "FROM NOMINATA WHERE code = "
+				+ code;
 
 		Nominata nominata = null;
 
@@ -78,6 +79,16 @@ public class NominataDao extends Dao {
 		return nominatas;
 	}
 
+	public void update(Nominata newNominata) throws SQLException {
+		try {
+			final String nominataQuery = "DELETE FROM belongs WHERE code = " + this.getNominata().getId();
+			Dao.executeUpdate(nominataQuery);
+			this.auxUpdate(newNominata);
+		} catch (Exception e) {
+			this.auxUpdate(getNominata());
+		}
+	}
+
 	public void register() throws SQLException {
 		final int semester = (Calendar.getInstance().get(Calendar.MONTH) < 6) ? 2 : 1;
 		final int semesterYear = (semester == 1) ? (Calendar.getInstance().get(Calendar.YEAR) + 1)
@@ -108,6 +119,26 @@ public class NominataDao extends Dao {
 			Dao.executeUpdate(rollback);
 			throw e;
 		}
+	}
+
+	private void auxUpdate(Nominata nominata) throws SQLException {
+		String officeQuery = "INSERT INTO belongs VALUES";
+		int i = 0;
+		while (i < nominata.getNominataList().size()) {
+			Office office = nominata.getNominataList().get(i);
+			if (office.getMember() != null) {
+				if (i != 0)
+					officeQuery += ",";
+				officeQuery += "('" + office.getOffice() + "'," + this.getNominata().getId() + " ,"
+						+ office.getMember().getId() + ")";
+
+			} else {
+				// Nothing to do
+			}
+			i++;
+		}
+		System.out.println(officeQuery);
+		Dao.executeUpdate(officeQuery);
 	}
 
 	public Nominata getNominata() {

@@ -26,6 +26,7 @@
 		Vector<Integer> indexesOfOffice = new Vector<Integer>();
 	%>
 	<form method="POST" action="updateNominata">
+		<input type="hidden" name="code" value="<% out.print(nominata_code); %>">
 		<fieldset>
 			<legend>Cadastro de Nominata para gestão subsequente</legend>
 			<%

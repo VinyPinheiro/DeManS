@@ -10,6 +10,16 @@
   <servlet-mapping>  
 	<servlet-name>controller_RegisterMember</servlet-name>  
 	<url-pattern>/registerMember</url-pattern>  
+  </servlet-mapping> 
+  
+  <servlet>  
+	<servlet-name>controller_UpdateNominata</servlet-name>  
+	<servlet-class>controller.UpdateNominata</servlet-class>  
+  </servlet>  
+	  
+  <servlet-mapping>  
+	<servlet-name>controller_UpdateNominata</servlet-name>  
+	<url-pattern>/updateNominata</url-pattern>  
   </servlet-mapping>  
   
   <servlet>  
