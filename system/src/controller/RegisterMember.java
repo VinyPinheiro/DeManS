@@ -97,5 +97,4 @@ public class RegisterMember extends HttpServlet {
 			out.print(error);
 		}
 	}
-
 }

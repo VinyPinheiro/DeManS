@@ -11,7 +11,7 @@
 	
 		<form action="LoginServlet" method="post">
 	
-			ID: <input type="text" name="user" pattern="^{6,}[0-9]$" placeholder="44199" required>
+			ID: <input type="text" name="user" placeholder="44199" required>
 			Senha: <input type="password" name="pwd" placeholder="******">
 			<input type="submit" value="Login">
 	

@@ -6,6 +6,7 @@
 
 package model;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -28,6 +29,8 @@ public class Member {
 	public static final String INVALID_PHONE = "Telefone não esta no formato solicitado";
 	public static final String NULL_DAD_PHONE = "telefone do pai não pode ser nulo";
 	public static final String INVALID_DAD_PHONE = "telefone do pai não esta no formato solicitado";
+	public static final String INVALID_DEGREE = "Grau inválido, use apenas('Iniciático', 'DeMolay', 'Maçom')";
+	public static final String INVALID_SITUATION = "Situação inválida, use apenas('Ativo', 'Irregular', 'Sênior')";
 
 	// Attributes
 	private Integer id = null;
@@ -37,6 +40,8 @@ public class Member {
 	private String phone = null;
 	private String dad_phone = null;
 	private Address address = null;
+	private String degree = null;
+	private String situation = null;
 
 	/**
 	 * 
@@ -67,6 +72,45 @@ public class Member {
 		setPhone(phone);
 		setDad_phone(dad_phone);
 		setAddress(address);
+		setDegree("Iniciático");
+		setSituation("Ativo");
+	}
+
+	/**
+	 * 
+	 * @param id
+	 *            Not null value and no negative number
+	 * @param name
+	 *            not null value and no more than 100 characters
+	 * @param birthdate
+	 *            date with minimum value 12 years ago
+	 * @param password
+	 *            range 6 to 20 characters
+	 * @param phone
+	 *            not null in the format "(XX)XXXXX-XXXX" or "(XX)XXXX-XXXX"
+	 * @param dad_phone
+	 *            not null in the format "(XX)XXXXX-XXXX" or "(XX)XXXX-XXXX"
+	 * @param address
+	 *            not null Address
+	 * @param degree
+	 *            Not null String ('Iniciático', 'DeMolay', 'Maçom')
+	 * @param situation
+	 *            Not Null or String('Ativo', 'Irregular', 'Sênior')
+	 * @throws MemberException
+	 *             It occurs if a parameter does not comply with the
+	 *             restrictions
+	 */
+	public Member(Integer id, String name, Date birthdate, String password, String phone, String dad_phone,
+			Address address, String degree, String situation) throws MemberException {
+		setId(id);
+		setName(name);
+		setBirthdate(birthdate);
+		setPassword(password);
+		setPhone(phone);
+		setDad_phone(dad_phone);
+		setAddress(address);
+		setDegree(degree);
+		setSituation(situation);
 	}
 
 	public Integer getId() {
@@ -182,6 +226,37 @@ public class Member {
 		} else {
 			throw new MemberException(Member.NULL_ADDRESS);
 		}
+	}
+
+	public String getDegree() {
+		return degree;
+	}
+
+	public void setDegree(String degree) throws MemberException {
+		final String[] options = { "Iniciático", "DeMolay", "Maçom" };
+		if (Arrays.asList(options).contains(degree)) {
+			this.degree = degree;
+		} else {
+			throw new MemberException(Member.INVALID_DEGREE);
+		}
+	}
+
+	public String getSituation() {
+		return situation;
+	}
+
+	public void setSituation(String situation) throws MemberException {
+		final String[] options = { "Ativo", "Irregular", "Sênior" };
+		if (Arrays.asList(options).contains(situation)) {
+			this.situation = situation;
+		} else {
+			throw new MemberException(Member.INVALID_SITUATION);
+		}
+	}
+	
+	public boolean equals(Member obj)
+	{
+		return this.getId().equals(obj.getId());
 	}
 
 }
