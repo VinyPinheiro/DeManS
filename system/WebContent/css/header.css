@@ -1,0 +1,19 @@
+header{
+    padding: 2em;
+    color: white;
+    background-color: black;
+    clear: left;
+    
+    text-align: center;
+    }
+#headercontainer a{
+	color:white;
+	text-decoration: none;
+	font-size:150%;
+	
+	
+}
+#headercontainer {
+    width: 100%;
+    border-bottom: 5px;
+}

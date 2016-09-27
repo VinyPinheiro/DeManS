@@ -90,7 +90,6 @@ public class MemberDao extends Dao {
 		} else {
 			member = null;
 		}
-
 		return member;
 	}
 

@@ -22,7 +22,7 @@
 <title>Cadastrar Nominata</title>
 </head>
 <body>
-
+<%@ include file="header.jsp" %>
 	<form method="POST" action="registerNominata">
 		<fieldset>
 			<legend>Cadastro de Nominata para gestão subsequente</legend>

@@ -9,6 +9,7 @@
 <title>Selecionar Semestre</title>
 </head>
 <body>
+<%@ include file="header.jsp" %>
 <h1>Selecione o Semestre/Ano</h1>
 
 	<form method="POST" action="change_nominata.jsp">

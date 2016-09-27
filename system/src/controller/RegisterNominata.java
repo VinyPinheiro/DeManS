@@ -50,7 +50,7 @@ public class RegisterNominata extends HttpServlet {
 			NominataDao nominataDao = new NominataDao(nominata);
 			nominataDao.register();
 			
-			final String error = "<script>alert('Salvo com sucesso.');location.href='index.html'</script>";
+			final String error = "<script>alert('Salvo com sucesso.');location.href='home.jsp'</script>";
 			out.print(error);
 
 		} catch (SQLException e) {

@@ -53,7 +53,7 @@ public class UpdateNominata extends HttpServlet {
 			NominataDao nominataDao = new NominataDao(nominataOld);
 			nominataDao.update(nominata);
 			
-			final String error = "<script>alert('Salvo com sucesso.');location.href='index.html'</script>";
+			final String error = "<script>alert('Salvo com sucesso.');location.href='home.jsp'</script>";
 			out.print(error);
 
 		} catch (SQLException e) {
