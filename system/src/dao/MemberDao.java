@@ -1,5 +1,5 @@
 /*****************************
- * Class name: MemberDao (.java)
+ * Class name: MemberDao (.java) 
  * 
  * Purpose: Class to persist member data.
  *****************************/
@@ -9,21 +9,20 @@ package dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Vector;
 
 import exception.AddressException;
 import exception.DaoException;
 import exception.MemberException;
 import exception.UfException;
+import model.Address;
 import model.Member;
-import model.UF;
-import model.Address;;
+import model.UF;;
 
 public class MemberDao extends Dao {
 
 	private static final String CLASS_NAME = "MemberDao";
-	private static final String NULL_MEMBER = "Erro, objeto de Membro não pode ser nullo.";
+	private static final String NULL_MEMBER = "Erro, objeto de Membro não pode ser nulo.";
 	private static final String EXISTS_ID = "Impossível registrar, id já cadastrada.";
 	private Member member;
 
@@ -125,7 +124,6 @@ public class MemberDao extends Dao {
 		} else {
 			member = null;
 		}
-
 		return member;
 	}
 
@@ -252,21 +250,6 @@ public class MemberDao extends Dao {
 				+ ",'" + address.getComplement() + "','" + address.getZipcode() + "'," + cityCode + ")";
 
 		return lastId(query);
-	}
-
-	/**
-	 * Method to execute query with return last id inserted
-	 * 
-	 * @param query
-	 *            Insert sql command
-	 * @return last id inserted
-	 * @throws SQLException
-	 *             query not compile with success
-	 */
-	private int lastId(String query) throws SQLException {
-		final long resultset = Dao.executeUpdate(query);
-
-		return Integer.parseInt(String.valueOf(resultset));
 	}
 
 	/**

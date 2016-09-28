@@ -2,15 +2,13 @@
 	pageEncoding="UTF-8"%>
 
 <%@ page import="model.Member"%>
+<%@ page import="model.Office"%>
 <%@ page import="dao.MemberDao"%>
 <%@ page import="java.util.Vector"%>
 
 <%
 	Vector<Member> activeMembers = MemberDao.activeMembers();
-	final String[] offices = { "Mestre Conselheiro", "1º Conselheiro", "2º Conselheiro", "Tesoureiro",
-			"Escrivão", "Orador", "1º Diácono", "2º Diácono", "1º Mordomo", "2º Mordomo", "Hospitaleiro",
-			"Capelão", "Porta Bandeira", "Sentinela", "Mestre de Cerimônias", "1º Preceptor", "2º Preceptor",
-			"3º Preceptor", "4º Preceptor", "5º Preceptor", "6º Preceptor", "7º Preceptor" };
+
 	String options = "<option value='' selected>Ninguém</option>";
 
 	for (Member member : activeMembers) {
@@ -24,15 +22,16 @@
 <title>Cadastrar Nominata</title>
 </head>
 <body>
-
-	<form method="POST" action="register_nominata">
+<%@ include file="header.jsp" %>
+	<form method="POST" action="registerNominata">
 		<fieldset>
 			<legend>Cadastro de Nominata para gestão subsequente</legend>
 	
 			<%
-				for (String office : offices) {
-					out.print("<label>"+office+"</label><br>");
-					out.print("<select name='"+office+"'>");
+				for (int  i = 0; i < Office.VALID_OFFICES.length; ++i)
+				{
+					out.print("<label>"+Office.VALID_OFFICES[i]+"</label><br>");
+					out.print("<select name='"+Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS[i]+"'>");
 					
 					out.print(options);
 									

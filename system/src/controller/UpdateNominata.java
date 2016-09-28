@@ -20,7 +20,8 @@ import model.Member;
 import model.Nominata;
 import model.Office;
 
-public class RegisterNominata extends HttpServlet {
+public class UpdateNominata extends HttpServlet {
+	
 
 	/**
 	 * Method to receive POST data and verify and send result to client
@@ -30,7 +31,9 @@ public class RegisterNominata extends HttpServlet {
 		PrintWriter out = response.getWriter();
 
 		try {
-			Nominata nominata = new Nominata();
+			int nominata_code = Integer.parseInt(request.getParameter("code"));
+			Nominata nominataOld = NominataDao.findNominata(nominata_code);
+			Nominata nominata = new Nominata(nominata_code);
 
 			for (String offices : Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS) {
 
@@ -47,8 +50,8 @@ public class RegisterNominata extends HttpServlet {
 				nominata.addOffice(office);
 			}
 
-			NominataDao nominataDao = new NominataDao(nominata);
-			nominataDao.register();
+			NominataDao nominataDao = new NominataDao(nominataOld);
+			nominataDao.update(nominata);
 			
 			final String error = "<script>alert('Salvo com sucesso.');location.href='home.jsp'</script>";
 			out.print(error);
@@ -69,6 +72,7 @@ public class RegisterNominata extends HttpServlet {
 					} else {
 						final String error = "<script>alert('Ouve um erro, tente novamente'); history.go(-1);</script>";
 						out.print(error);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -76,7 +80,8 @@ public class RegisterNominata extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
+			final String error = "<script>alert('Erro ao recuperar o código da Nominata.Tente mais tarde'); history.go(-1);</script>";
+			out.print(error);
 			e.printStackTrace();
 		} catch (AddressException e) {
 			// TODO Auto-generated catch block
