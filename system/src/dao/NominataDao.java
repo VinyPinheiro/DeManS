@@ -49,6 +49,34 @@ public class NominataDao extends Dao {
 
 		return nominata;
 	}
+	
+	public static Nominata findNominataBySemester(int desiredSemester, int desiredYear)
+			throws SQLException, NominataException, OfficeException, AddressException, UfException, MemberException {
+		final String query = "SELECT NOMINATA.code,NOMINATA.semester, NOMINATA.year " + "FROM NOMINATA WHERE NOMINATA.semester = "+
+			desiredSemester+" and NOMINATA.year = " + desiredYear;
+
+		Nominata nominata = null;
+
+		ResultSet data = Dao.executeQuery(query);
+		while (data.next()) {
+			int id = data.getInt("code");
+			int year = data.getInt("year");
+			int semester = data.getInt("semester");
+
+			nominata = new Nominata(id, semester, year);
+
+			final String secundaryQuery = "SELECT belongs.office, belongs.id FROM belongs WHERE code = " + id;
+
+			ResultSet secundaryData = Dao.executeQuery(secundaryQuery);
+
+			while (secundaryData.next()) {
+				nominata.addOffice(
+						new Office(MemberDao.findById(secundaryData.getInt("id")), secundaryData.getString("office")));
+			}
+		}
+
+		return nominata;
+	}
 
 	public static Vector<Nominata> returnAllNominatas()
 			throws SQLException, NominataException, OfficeException, AddressException, UfException, MemberException {
