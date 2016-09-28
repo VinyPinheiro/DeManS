@@ -53,6 +53,15 @@
 	<url-pattern>/home</url-pattern>  
   </servlet-mapping>   
  
+ <servlet>  
+	<servlet-name>controller_Approve_member</servlet-name>  
+	<servlet-class>controller.ApproveMember</servlet-class>  
+  </servlet>  
+	  
+  <servlet-mapping>  
+	<servlet-name>controller_ApproveMember</servlet-name>  
+	<url-pattern>/approveMember</url-pattern>  
+  </servlet-mapping> 
   
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

@@ -17,6 +17,8 @@ import exception.MemberException;
 import exception.UfException;
 import model.Address;
 import model.Member;
+import model.Nominata;
+import model.Office;
 import model.UF;;
 
 public class MemberDao extends Dao {
@@ -251,7 +253,17 @@ public class MemberDao extends Dao {
 
 		return lastId(query);
 	}
-
+	
+	public void approveMember(Member newMember) throws SQLException {
+		final String memberQuery = "UPDATE member SET situation = 'Ativo' WHERE id = " + this.getMember().getId();
+		
+		try {
+			Dao.executeUpdate(memberQuery);
+		} catch (Exception e) {
+			// Nothing to do
+		}
+	}
+			
 	/**
 	 * @return the member
 	 */

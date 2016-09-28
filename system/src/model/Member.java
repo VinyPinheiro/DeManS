@@ -72,8 +72,8 @@ public class Member {
 		setPhone(phone);
 		setDad_phone(dad_phone);
 		setAddress(address);
-		setDegree("Iniciático");
-		setSituation("Ativo");
+		setDegree("Iniciatico");
+		setSituation("Pendente");
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class Member {
 	 * @param address
 	 *            not null Address
 	 * @param degree
-	 *            Not null String ('Iniciático', 'DeMolay', 'Maçom')
+	 *            Not null String ('Iniciatico', 'DeMolay', 'Macom')
 	 * @param situation
 	 *            Not Null or String('Ativo', 'Irregular', 'Sênior')
 	 * @throws MemberException
@@ -233,7 +233,7 @@ public class Member {
 	}
 
 	public void setDegree(String degree) throws MemberException {
-		final String[] options = { "Inici�tico", "DeMolay", "Ma�om" };
+		final String[] options = { "Iniciatico", "DeMolay", "Macom" };
 		if (Arrays.asList(options).contains(degree)) {
 			this.degree = degree;
 		} else {
@@ -246,7 +246,7 @@ public class Member {
 	}
 
 	public void setSituation(String situation) throws MemberException {
-		final String[] options = { "Ativo", "Irregular", "Sênior" };
+		final String[] options = { "Ativo", "Irregular", "Senior", "Pendente", "Recusado" };
 		if (Arrays.asList(options).contains(situation)) {
 			this.situation = situation;
 		} else {

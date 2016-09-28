@@ -36,6 +36,11 @@ public class RegisterMember extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
+	}
+	
 	/**
 	 * Method to receive POST data and verify and send result to client
 	 */
