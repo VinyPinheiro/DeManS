@@ -78,5 +78,21 @@ public class Login extends HttpServlet {
 			response.sendError(412);
 		}
 	}
+	
+	private int getCurrentSemester(){
+		LocalDateTime date = LocalDateTime.now();
+		int month = date.getMonthValue();
+		
+		
+		return month;
+	}
+	
+	private int getCurrentYear(){
+		LocalDateTime date = LocalDateTime.now();
+		int year = date.getYear();
+		
+		
+		return year;
+	}
 
 }
