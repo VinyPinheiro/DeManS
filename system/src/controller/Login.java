@@ -43,6 +43,7 @@ public class Login extends HttpServlet {
 				if(member.getPassword().equals(pwd)){
 					HttpSession session = request.getSession();
 					session.setAttribute("user", member.getName());
+					//session.setAttribute("job", member.getJob());
 					//setting session to expiry in 30 mins
 					session.setMaxInactiveInterval(30*60);
 					Cookie userName = new Cookie("user",request.getParameter("user"));
