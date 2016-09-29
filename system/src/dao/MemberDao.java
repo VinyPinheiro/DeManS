@@ -78,7 +78,7 @@ public class MemberDao extends Dao {
 				+ "MEMBER.phone, MEMBER.dad_phone, MEMBER.degree, MEMBER.situation, ADDRESS.street, ADDRESS.number, ADDRESS.complement, "
 				+ "ADDRESS.zip_code, CITY.name as city_name, CITY.initials FROM "
 				+ "MEMBER INNER JOIN ADDRESS ON MEMBER.address_code = ADDRESS.code "
-				+ "INNER JOIN CITY ON CITY.code = ADDRESS.city_code " + "WHERE MEMBER.situation = 'Aguardando'";
+				+ "INNER JOIN CITY ON CITY.code = ADDRESS.city_code " + "WHERE MEMBER.situation = 'Pendente'";
 		
 		ResultSet data = Dao.executeQuery(query);
 		

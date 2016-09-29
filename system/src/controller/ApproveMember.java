@@ -21,7 +21,6 @@ import model.Member;
 import model.Nominata;
 import model.Office;
 
-@WebServlet("/approve_member")
 public class ApproveMember extends HttpServlet {
 	
 

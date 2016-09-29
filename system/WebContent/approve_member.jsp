@@ -13,34 +13,25 @@
 </head>
 <body>
 
+	<%@ include file="header.jsp" %>
+
 	<%
 	 //Lista de Membros com solicitação Pendente
 		ArrayList<Member> requesterMembers = MemberDao.requesterMembers();
-		/*final String[] offices = { "Mestre Conselheiro", "1º Conselheiro", "2º Conselheiro", "Tesoureiro",
-				"Escrivão", "Orador", "1º Diácono", "2º Diácono", "1º Mordomo", "2º Mordomo", "Hospitaleiro",
-				"Capelão", "Porta Bandeira", "Sentinela", "Mestre de Cerimônias", "1º Preceptor", "2º Preceptor",
-				"3º Preceptor", "4º Preceptor", "5º Preceptor", "6º Preceptor", "7º Preceptor" }; */
-		String options = "<option value='' selected>Ninguém</option>"; 
-	
-		for (Member member : requesterMembers) {
-			options += "<option value='" + member.getId() + "'>" + member.getName() + "</option>";
-		}
+		out.print("<label>"+"Tamanho da lista: " + requesterMembers.size()+"</label><br>");
 	%>
 	
 	<form method="POST" action="approve_member">
 		<fieldset>
 			<legend>Aprovação de Membros para cadastro no sistema</legend>
-	
+						
 			<%
-				for (Member member : requesterMembers) {
-					out.print("<label>"+member+"</label><br>");
-					out.print("<select name='"+member+"'>");
-					
-					out.print(options);
-									
-					out.print("</select><br>");
+				for (int  i = 0; i < requesterMembers.size(); ++i) {
+					out.print("<a>"+requesterMembers.get(i).getId()+"</a></pre>");
+					out.print("<a>"+requesterMembers.get(i).getName()+"</a><br>");
 				}
 			%>
+			
 		</fieldset>
 		<br> <input type="submit" value="Concluir">
 	</form>
