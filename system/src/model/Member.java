@@ -75,6 +75,11 @@ public class Member {
 		setDegree("Iniciatico");
 		setSituation("Pendente");
 	}
+	
+	public Member(Integer id, String situation) throws MemberException {
+		setId(id);
+		setSituation(situation);
+	}
 
 	/**
 	 * 

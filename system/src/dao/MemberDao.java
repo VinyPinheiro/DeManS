@@ -263,6 +263,16 @@ public class MemberDao extends Dao {
 			// Nothing to do
 		}
 	}
+	
+	public void rejectMember(Member newMember) throws SQLException {
+		final String memberQuery = "UPDATE member SET situation = 'Recusado' WHERE id = " + this.getMember().getId();
+		
+		try {
+			Dao.executeUpdate(memberQuery);
+		} catch (Exception e) {
+			// Nothing to do
+		}
+	}
 			
 	/**
 	 * @return the member

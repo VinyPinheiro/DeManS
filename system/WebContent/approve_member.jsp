@@ -19,19 +19,37 @@
 	 //Lista de Membros com solicitação Pendente
 		ArrayList<Member> requesterMembers = MemberDao.requesterMembers();
 		out.print("<label>"+"Tamanho da lista: " + requesterMembers.size()+"</label><br>");
+		
 	%>
 	
-	<form method="POST" action="approve_member">
+	<form method="POST" action="approveMember">
 		<fieldset>
 			<legend>Aprovação de Membros para cadastro no sistema</legend>
-						
+								
 			<%
+				out.print("<table style='width:100%'><tr>");
 				for (int  i = 0; i < requesterMembers.size(); ++i) {
-					out.print("<a>"+requesterMembers.get(i).getId()+"</a></pre>");
-					out.print("<a>"+requesterMembers.get(i).getName()+"</a><br>");
+					
+					out.print("<td>"+requesterMembers.get(i).getId()+"</td>");
+					out.print("<th>"+requesterMembers.get(i).getName()+"</th>");
+					out.print("<td>"+requesterMembers.get(i).getBirthdate()+"</td>");
+					out.print("<td>"+requesterMembers.get(i).getAddress()+"</td>");
+					out.print("<td>"+requesterMembers.get(i).getPhone()+"</td>");
+					out.print("<th>"+requesterMembers.get(i).getSituation()+"</th>");
+					out.print("<td><input type='submit' id='acceptMember' name='approve' value='Aceitar'></td>");
+					out.print("<td><input type='submit' id='rejectMember' name='approve' value='Recusar'></td>");
+					out.print("</tr>");
+					
+					int idMember = requesterMembers.get(i).getId();
+					request.getSession().setAttribute("idMember", idMember);
 				}
+				out.print("</table>");
+				
+				
+				
+
 			%>
-			
+		
 		</fieldset>
 		<br> <input type="submit" value="Concluir">
 	</form>
