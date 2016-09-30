@@ -17,8 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.MemberDao;
+import dao.NominataDao;
 import exception.AddressException;
 import exception.MemberException;
+import exception.NominataException;
+import exception.OfficeException;
 import exception.UfException;
 import model.Member;
 
@@ -46,7 +49,10 @@ public class Login extends HttpServlet {
 				if(member.getPassword().equals(pwd)){
 					HttpSession session = request.getSession();
 					session.setAttribute("user", member.getName());
-					//setting session to expiry in 30 mins
+					
+					session.setAttribute("official",NominataDao.findNominataBySemester(member.getId(), getCurrentSemester(), getCurrentYear()));
+					System.out.println(session.getAttribute("official"));
+					
 					session.setMaxInactiveInterval(30*60);
 					Cookie userName = new Cookie("user",request.getParameter("user"));
 					userName.setMaxAge(30*60);
@@ -76,15 +82,26 @@ public class Login extends HttpServlet {
 			System.out.println("There was an error conneting to the server." + memberException);
 			
 			response.sendError(412);
+		} catch (NominataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OfficeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
 	private int getCurrentSemester(){
 		LocalDateTime date = LocalDateTime.now();
 		int month = date.getMonthValue();
+		int semester = 0;
 		
-		
-		return month;
+		if(month > 6){
+			semester = 1;
+		}else{
+			semester = 2;
+		}
+		return semester;
 	}
 	
 	private int getCurrentYear(){
