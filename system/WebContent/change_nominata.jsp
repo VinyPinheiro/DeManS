@@ -26,7 +26,7 @@
 		Vector<Integer> indexesOfOffice = new Vector<Integer>();
 	%>
 	<form method="POST" action="updateNominata">
-		<input type="hidden" name="code" value="<% out.print(nominata_code); %>">
+		<input type="hidden" name="code" value="<%out.print(nominata_code);%>">
 		<fieldset>
 			<legend>Cadastro de Nominata para gestão subsequente</legend>
 			<%
@@ -35,13 +35,25 @@
 					out.print("<select name='" + Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS[i] + "'>");
 
 					String options = "<option value=''>Ninguém</option>";
-					for (Office office : nominata.getNominataList()) {
-						if (Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS[i].equals(office.getOffice())) {
-							options += "<option value='" + office.getMember().getId() + "' selected>" + office.getMember().getName() + "</option>";
-						} else {
-							options += "<option value='" + office.getMember().getId() + "'>" + office.getMember().getName() + "</option>";
+
+					int counting = 0;
+					for (Member member : MemberDao.activeMembers()) {
+						boolean printed = false;
+						for (Office office : nominata.getNominataList()) {
+							if (Office.VALID_OFFICES_WITHOUT_ESPECIAL_CHARACTERS[i].equals(office.getOffice())
+									&& office.getMember().equals(member)) {
+								options += "<option value='" + office.getMember().getId() + "' selected>"
+										+ office.getMember().getName() + "</option>";
+								printed = true;
+								break;
+							}
 						}
 
+						if (!printed) {
+							options += "<option value='" + member.getId() + "'>" + member.getName() + "</option>";
+						} else {
+							//Nothing to do.
+						}
 					}
 
 					out.print(options);
