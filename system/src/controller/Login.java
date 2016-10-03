@@ -2,7 +2,9 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,8 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.MemberDao;
+import dao.NominataDao;
 import exception.AddressException;
 import exception.MemberException;
+import exception.NominataException;
+import exception.OfficeException;
 import exception.UfException;
 import model.Member;
 
@@ -43,7 +48,10 @@ public class Login extends HttpServlet {
 				if(member.getPassword().equals(pwd)){
 					HttpSession session = request.getSession();
 					session.setAttribute("user", member.getName());
-					//setting session to expiry in 30 mins
+					
+					session.setAttribute("official",NominataDao.findNominataBySemester(member.getId(), getCurrentSemester(), getCurrentYear()));
+					System.out.println(session.getAttribute("official"));
+					
 					session.setMaxInactiveInterval(30*60);
 					Cookie userName = new Cookie("user",request.getParameter("user"));
 					userName.setMaxAge(30*60);
@@ -73,7 +81,34 @@ public class Login extends HttpServlet {
 			System.out.println("There was an error conneting to the server." + memberException);
 			
 			response.sendError(412);
+		} catch (NominataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OfficeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	}
+	
+	private int getCurrentSemester(){
+		
+		int month = Calendar.MONTH;
+		int semester = 0;
+		
+		if(month > 6){
+			semester = 1;
+		}else{
+			semester = 2;
+		}
+		System.out.println(month);
+		return semester;
+	}
+	
+	private int getCurrentYear(){
+		int year = Calendar.YEAR;
+		
+		System.out.println(year);
+		return year;
 	}
 
 }
