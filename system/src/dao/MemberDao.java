@@ -254,8 +254,8 @@ public class MemberDao extends Dao {
 		return lastId(query);
 	}
 	
-	public void approveMember(Member newMember) throws SQLException {
-		final String memberQuery = "UPDATE member SET situation = 'Ativo' WHERE id = " + this.getMember().getId();
+	public void approveMember(Member newMember, long codeUser) throws SQLException {
+		final String memberQuery = "UPDATE member SET situation = 'Ativo', approved_by = " + codeUser + " WHERE id = " + this.getMember().getId();
 		
 		try {
 			Dao.executeUpdate(memberQuery);
@@ -264,8 +264,8 @@ public class MemberDao extends Dao {
 		}
 	}
 	
-	public void rejectMember(Member newMember) throws SQLException {
-		final String memberQuery = "UPDATE member SET situation = 'Recusado' WHERE id = " + this.getMember().getId();
+	public void rejectMember(Member newMember, long codeUser) throws SQLException {
+		final String memberQuery = "UPDATE member SET situation = 'Recusado', approved_by = " + codeUser + " WHERE id = " + this.getMember().getId();
 		
 		try {
 			Dao.executeUpdate(memberQuery);

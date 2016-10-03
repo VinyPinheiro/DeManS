@@ -16,10 +16,9 @@
 	<%@ include file="header.jsp" %>
 
 	<%
-	 //Lista de Membros com solicitação Pendente
+	 // Member List with Pending request.
 		ArrayList<Member> requesterMembers = MemberDao.requesterMembers();
 		out.print("<label>"+"Tamanho da lista: " + requesterMembers.size()+"</label><br>");
-		
 	%>
 	
 	<form method="POST" action="approveMember">
@@ -33,7 +32,7 @@
 					out.print("<td>"+requesterMembers.get(i).getId()+"</td>");
 					out.print("<th>"+requesterMembers.get(i).getName()+"</th>");
 					out.print("<td>"+requesterMembers.get(i).getBirthdate()+"</td>");
-					out.print("<td>"+requesterMembers.get(i).getAddress()+"</td>");
+					out.print("<td>"+requesterMembers.get(i).getAddress().toString()+"</td>");
 					out.print("<td>"+requesterMembers.get(i).getPhone()+"</td>");
 					out.print("<th>"+requesterMembers.get(i).getSituation()+"</th>");
 					out.print("<td><input type='submit' id='acceptMember' name='approve' value='Aceitar'></td>");
@@ -45,13 +44,19 @@
 				}
 				out.print("</table>");
 				
+				// Get the user id that approved the request pending registration.
+				Cookie[] cookies = request.getCookies();
+				if (cookies != null) {
+					for (Cookie cookie : cookies) {
+						if (cookie.getName().equals("user"))
+							userName = cookie.getValue();
+							request.getSession().setAttribute("userName", userName);
+					}
+				}
 				
-				
-
 			%>
-		
+			
 		</fieldset>
-		<br> <input type="submit" value="Concluir">
 	</form>
 </body>
 </html>

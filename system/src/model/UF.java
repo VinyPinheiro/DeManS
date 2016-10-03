@@ -73,4 +73,9 @@ public class UF {
 	public String getState() {
 		return state;
 	}
+	
+	@Override
+	public String toString() {
+		return getInitials();
+	}
 }

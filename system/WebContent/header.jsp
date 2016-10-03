@@ -30,18 +30,21 @@
 		<%
 			if (logado == false) {
 		%>
-		<a href="/DeMans/">Inicio</a> | 
-		<a href="/DeMans/register.jsp">Cadastrar</a> | 
-		<a href="/DeMans/login.jsp">Entrar</a>
-		<li>Administrar Capítulo</li>
+		 
+			<a href="/DeMans/">Inicio</a> | 
+			<a href="/DeMans/register.jsp">Cadastrar</a> | 
+			<a href="/DeMans/login.jsp">Entrar</a>
+			<li>Administrar Capítulo</li>
+			<hr width="50%">
 
 		<%
 			} else {
 		%>
 
-		<a href="register_nominata.jsp">Cadastrar Nova Nominata</a> 
-		<a href="select_nominata.jsp">Alterar Nominata</a>
-		<a href="/DeMans/approve_member.jsp">Aprovar Membro</a>
+			<a href="/DeMans/register_nominata.jsp">Cadastrar Nova Nominata</a> |
+			<a href="/DeMans/select_nominata.jsp">Alterar Nominata</a> |
+			<a href="/DeMans/approve_member.jsp">Aprovar Membro</a> |
+			<hr width="50%">
 
 		<h3>
 			Logado como

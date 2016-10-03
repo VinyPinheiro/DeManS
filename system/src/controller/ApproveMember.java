@@ -1,9 +1,14 @@
+/*****************************
+* Class name: ApproveMember (.java) 
+ * 
+ * Purpose: Controller class for the member approves requesting member registration.
+ *****************************/
+
 package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,18 +16,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.MemberDao;
-import exception.AddressException;
 import exception.DaoException;
 import exception.MemberException;
-import exception.OfficeException;
-import exception.UfException;
-import model.Address;
 import model.Member;
-import model.Office;
-import model.UF;
 
 public class ApproveMember extends HttpServlet {
 	
+	/**
+	 * Method to GET receive data and perform the same process that data received by POST method.
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
@@ -36,34 +38,36 @@ public class ApproveMember extends HttpServlet {
 		
 		try {		
 			String approve = request.getParameter("approve"); 
-			System.out.println("Approve: "+ approve);
-			
-			System.out.println(request.getSession().getAttribute("idMember"));
 			int memberId = (int) request.getSession().getAttribute("idMember");
 						
-			if(request.getParameter("approve").equals("Aceitar")) {
-				System.out.println("Aceitar membro!");
-				approve = "Ativo";
-				Member member = new Member(memberId, approve);
-				MemberDao member_dao = new MemberDao(member);
-				
-				member_dao.approveMember(member);
+			// Receive the user who approved or rejected the request.
+			String stringUser = String.valueOf(request.getSession().getAttribute("userName"));
+			int codeUser = Integer.parseInt(stringUser);
 			
-			} else if (request.getParameter("approve").equals("Recusar")) {
-				 System.out.println("Recusar membro!");
-				approve = "Recusado";
+			if(request.getParameter("approve").equals("Aceitar")) {
+				approve = "Ativo";
+				System.out.println("Member Id Aprovado: "+ memberId);
 				Member member = new Member(memberId, approve);
 				MemberDao member_dao = new MemberDao(member);
-					
-				member_dao.rejectMember(member);
+				member_dao.approveMember(member, codeUser);
+				response.sendRedirect("approve_member.jsp");
+			
+			} else if(request.getParameter("approve").equals("Recusar")) {
+				approve = "Recusado";
+				System.out.println("Member Id Recusado: "+ memberId);
+				Member member = new Member(memberId, approve);
+				MemberDao member_dao = new MemberDao(member);
+				member_dao.rejectMember(member, codeUser);
+				response.sendRedirect("approve_member.jsp");
+				
+		    } else {
+		    	// Nothing to do!
 		    }
 						
-			//request.getRequestDispatcher("approveMember").forward(request, response);
-
         } catch (SQLException e) {            
             e.printStackTrace();	
 		} catch (NumberFormatException e) {
-			final String error = "<script>alert('Erro ao recuperar ao Aprovar Membro.Tente mais tarde'); history.go(-1);</script>";
+			final String error = "<script>alert('Erro ao recuperar ao Aprovar Membro.'); history.go(-1);</script>";
 			out.print(error);
 			e.printStackTrace();
 		} catch (MemberException e) {

@@ -1,4 +1,4 @@
-﻿use mysql;
+use mysql;
 
 DROP DATABASE IF EXISTS DeManS_db;
 CREATE DATABASE demans_db;
@@ -45,6 +45,7 @@ dad_phone VARCHAR(15) NOT NULL,
 address_code INT NOT NULL,
 degree Enum('Iniciatico', 'DeMolay', 'Macom') NOT NULL DEFAULT 'Iniciatico',
 situation Enum('Ativo', 'Irregular', 'Senior', 'Pendente', 'Recusado') NOT NULL DEFAULT 'Pendente',
+approved_by INT,
 CONSTRAINT member_address_FK FOREIGN KEY(address_code) REFERENCES ADDRESS (code) ON UPDATE RESTRICT ON DELETE RESTRICT,
 CONSTRAINT member_PK PRIMARY KEY(id)
 )ENGINE = InnoDb DEFAULT CHARSET utf8;

@@ -1,5 +1,5 @@
 /*****************************
-* Class name: RegisterMember (.java)
+* Class name: RegisterMember (.java) 
  * 
  * Purpose: Controller class to create Member object and persist in database
  *****************************/
