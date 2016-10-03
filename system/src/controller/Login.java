@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 
 import javax.servlet.RequestDispatcher;
@@ -92,8 +91,8 @@ public class Login extends HttpServlet {
 	}
 	
 	private int getCurrentSemester(){
-		LocalDateTime date = LocalDateTime.now();
-		int month = date.getMonthValue();
+		
+		int month = Calendar.MONTH;
 		int semester = 0;
 		
 		if(month > 6){
@@ -106,8 +105,7 @@ public class Login extends HttpServlet {
 	}
 	
 	private int getCurrentYear(){
-		LocalDateTime date = LocalDateTime.now();
-		int year = date.getYear();
+		int year = Calendar.YEAR;
 		
 		System.out.println(year);
 		return year;
