@@ -101,6 +101,7 @@ public class Login extends HttpServlet {
 		}else{
 			semester = 2;
 		}
+		System.out.println(month);
 		return semester;
 	}
 	
@@ -108,7 +109,7 @@ public class Login extends HttpServlet {
 		LocalDateTime date = LocalDateTime.now();
 		int year = date.getYear();
 		
-		
+		System.out.println(year);
 		return year;
 	}
 

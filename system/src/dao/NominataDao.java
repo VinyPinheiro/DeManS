@@ -52,7 +52,7 @@ public class NominataDao extends Dao {
 	
 	public static String findNominataBySemester(int User, int desiredSemester, int desiredYear)
 			throws SQLException, NominataException, OfficeException, AddressException, UfException, MemberException {
-		final String query = "SELECT NOMINATA.code,NOMINATA.semester, NOMINATA.year " + "FROM NOMINATA WHERE NOMINATA.semester = "+
+		final String query = "SELECT NOMINATA.code, NOMINATA.semester, NOMINATA.year " + "FROM NOMINATA WHERE NOMINATA.semester = "+
 			desiredSemester+" and NOMINATA.year = " + desiredYear;
 		System.out.println("User ="+User);
 		String cargo = "";

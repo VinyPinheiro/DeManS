@@ -21,6 +21,7 @@ if(logado == false){
 <h3>Hi <%=userName %>, Login successful. Your Session ID=<%=sessionID %></h3>
 <br>
 User= <%=user %>
+Cargo= <%=session.getAttribute("office") %>
 <br>
 
 <form action="LogoutServlet" method="post">
