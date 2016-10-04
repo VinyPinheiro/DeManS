@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -12,7 +12,7 @@
 
 String user = null;
 if(logado == false){
-	response.sendRedirect("login.html");
+	response.sendRedirect("login.jsp");
 }else {
 	user = (String) session.getAttribute("user"); 
 	}%>
@@ -21,6 +21,7 @@ if(logado == false){
 <h3>Hi <%=userName %>, Login successful. Your Session ID=<%=sessionID %></h3>
 <br>
 User= <%=user %>
+Cargo= <%=session.getAttribute("office") %>
 <br>
 
 <form action="LogoutServlet" method="post">

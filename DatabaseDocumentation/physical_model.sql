@@ -1,10 +1,12 @@
+use mysql;
+
 DROP DATABASE IF EXISTS DeManS_db;
-CREATE DATABASE DeManS_db;
+CREATE DATABASE demans_db;
 
-use DeManS_db;
+use demans_db;
 
-CREATE USER 'DeManS' IDENTIFIED BY 'demolay';
-GRANT ALL PRIVILEGES ON DeManS_db.* TO 'DeManS';
+#CREATE USER 'demans' IDENTIFIED BY 'demolay';
+#GRANT ALL PRIVILEGES ON demans_db.* TO 'demans';
 
 CREATE TABLE UF (
 initials VARCHAR(2) NOT NULL,
@@ -41,8 +43,9 @@ password VARCHAR(200) NOT NULL,
 phone VARCHAR(15) NOT NULL,
 dad_phone VARCHAR(15) NOT NULL,
 address_code INT NOT NULL,
-degree Enum('Iniciático', 'DeMolay', 'Maçom') NOT NULL DEFAULT 'Iniciático',
-situation Enum('Ativo', 'Irregular', 'Sênior') NOT NULL DEFAULT 'Ativo',
+degree Enum('Iniciatico', 'DeMolay', 'Macom') NOT NULL DEFAULT 'Iniciatico',
+situation Enum('Ativo', 'Irregular', 'Senior', 'Pendente', 'Recusado') NOT NULL DEFAULT 'Pendente',
+approved_by INT,
 CONSTRAINT member_address_FK FOREIGN KEY(address_code) REFERENCES ADDRESS (code) ON UPDATE RESTRICT ON DELETE RESTRICT,
 CONSTRAINT member_PK PRIMARY KEY(id)
 )ENGINE = InnoDb DEFAULT CHARSET utf8;
@@ -67,5 +70,3 @@ CONSTRAINT belongs1_UK UNIQUE(id,code),
 CONSTRAINT belongs_to_nominata_FK FOREIGN KEY(code) REFERENCES NOMINATA (code) ON UPDATE CASCADE ON DELETE CASCADE,
 CONSTRAINT member_belongs_FK FOREIGN KEY(id) REFERENCES MEMBER (id) ON UPDATE RESTRICT ON DELETE RESTRICT
 )ENGINE = InnoDb DEFAULT CHARSET utf8;
-
-

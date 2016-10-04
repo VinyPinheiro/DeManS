@@ -151,4 +151,10 @@ public class Address {
 			throw new AddressException(Address.NULL_UF);
 		}
 	}
+	
+	@Override
+	public String toString() {
+		String address = getStreet() + " Casa " + getNumber() + " - " + getCity() + " /" + getUf().toString();
+		return address;
+	}
 }
