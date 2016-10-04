@@ -6,7 +6,6 @@
 
 package controller;
 
-import java.awt.Window;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -40,30 +39,26 @@ public class ApproveMember extends HttpServlet {
 		
 		try {		
 			String approve = request.getParameter("approve"); 
-			 			
-			String approve1 = String.valueOf(request.getParameter("approve").substring(7));
 			
-			System.out.println("approve= "+approve1);
-			int memberId = Integer.parseInt(approve1); 
+			// Take the position in the user list to be changed.
+			String subApprove = String.valueOf(request.getParameter("approve").substring(7));
+			
+			int memberId = Integer.parseInt(subApprove); 
 
 			// Receive the user who approved or rejected the request.
 			String stringUser = String.valueOf(request.getSession().getAttribute("userName"));
 			int codeUser = Integer.parseInt(stringUser);
 			
+			// List of pending registrations.
 			ArrayList<Member> requesterMembers = (ArrayList<Member>) request.getSession().getAttribute("requesterMembers");
-			//int memberId = requesterMembers.get(1).getId();
 			
 			if(request.getParameter("approve").contains("Aceitar")) {
 				approve = "Ativo";
-				
-				System.out.println("Member Position Aprovado: "+ memberId);
-				System.out.println("RequesterMembers: "+ requesterMembers.size());
-				
+							
 				int idMembro = requesterMembers.get(memberId).getId();
 				
 				Member member = new Member(idMembro, approve);
 				MemberDao member_dao = new MemberDao(member);
-				System.out.println("Member ID Aprovado: "+ idMembro);
 								
 				member_dao.approveMember(member, codeUser);
 				response.sendRedirect("approve_member.jsp");
@@ -71,15 +66,11 @@ public class ApproveMember extends HttpServlet {
 			} else if(request.getParameter("approve").contains("Recusar")) {
 				approve = "Recusado";
 				
-				System.out.println("Member Position Reprovado: "+ memberId);
-				System.out.println("RequesterMembers: "+ requesterMembers.size());
-				
 				int idMembro = requesterMembers.get(memberId).getId();
 			
 				Member member = new Member(idMembro, approve);
 				MemberDao member_dao = new MemberDao(member);
 				
-				System.out.println("Member Id Recusado: "+ memberId);
 				member_dao.rejectMember(member, codeUser);
 				response.sendRedirect("approve_member.jsp");
 				
