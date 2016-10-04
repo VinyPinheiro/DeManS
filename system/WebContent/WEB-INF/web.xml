@@ -2,6 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   <display-name>DeMans</display-name>
 
+  <!-- Mapeamento da Servlet de Cadastro de Membros -->
   <servlet>  
 	<servlet-name>controller_RegisterMember</servlet-name>  
 	<servlet-class>controller.RegisterMember</servlet-class>  
@@ -12,16 +13,7 @@
 	<url-pattern>/registerMember</url-pattern>  
   </servlet-mapping> 
   
-  <servlet>  
-	<servlet-name>controller_UpdateNominata</servlet-name>  
-	<servlet-class>controller.UpdateNominata</servlet-class>  
-  </servlet>  
-	  
-  <servlet-mapping>  
-	<servlet-name>controller_UpdateNominata</servlet-name>  
-	<url-pattern>/updateNominata</url-pattern>  
-  </servlet-mapping>  
-  
+   <!-- Mapeamento da Servlet para Registro de Nominata -->
   <servlet>  
 	<servlet-name>controller_RegisterNominata</servlet-name>  
 	<servlet-class>controller.RegisterNominata</servlet-class>  
@@ -31,8 +23,19 @@
 	<servlet-name>controller_RegisterNominata</servlet-name>  
 	<url-pattern>/registerNominata</url-pattern>  
   </servlet-mapping>  
+  
+  <!-- Mapeamento da Servlet para Editar Nominata -->
+  <servlet>  
+	<servlet-name>controller_UpdateNominata</servlet-name>  
+	<servlet-class>controller.UpdateNominata</servlet-class>  
+  </servlet>  
+	  
+  <servlet-mapping>  
+	<servlet-name>controller_UpdateNominata</servlet-name>  
+	<url-pattern>/updateNominata</url-pattern>  
+  </servlet-mapping>  
 
-
+  <!-- Mapeamento da Servlet para Efetuar Login -->
   <servlet>  
 	<servlet-name>controller_Login</servlet-name>  
 	<servlet-class>controller.Login</servlet-class>  
@@ -43,6 +46,7 @@
 	<url-pattern>/login</url-pattern>  
   </servlet-mapping>   
   
+    <!-- Mapeamento da Servlet para redirecionar a página Principal -->
   <servlet>  
 	<servlet-name>controller_home</servlet-name>  
 	<servlet-class>controller.Login</servlet-class>  
@@ -53,6 +57,16 @@
 	<url-pattern>/home</url-pattern>  
   </servlet-mapping>   
  
+   <!-- Mapeamento da Servlet para Aprovar Membros -->
+  <servlet>  
+	<servlet-name>controller_ApproveMember</servlet-name>  
+	<servlet-class>controller.ApproveMember</servlet-class>  
+  </servlet>  
+	  
+  <servlet-mapping>  
+	<servlet-name>controller_ApproveMember</servlet-name>  
+	<url-pattern>/approveMember</url-pattern>  
+  </servlet-mapping> 
   
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

@@ -10,7 +10,7 @@
 	<div style = "text-align:center">
 	
 		<form action="LoginServlet" method="post">
-	
+			<br>
 			ID: <input type="text" name="user" placeholder="44199" required>
 			Senha: <input type="password" name="pwd" placeholder="******">
 			<input type="submit" value="Login">

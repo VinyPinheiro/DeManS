@@ -1,5 +1,5 @@
 /*****************************
- * Class name: MemberDao (.java)
+ * Class name: MemberDao (.java) 
  * 
  * Purpose: Class to persist member data.
  *****************************/
@@ -8,20 +8,23 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import exception.AddressException;
 import exception.DaoException;
 import exception.MemberException;
 import exception.UfException;
+import model.Address;
 import model.Member;
-import model.UF;
-import model.Address;;
+import model.Nominata;
+import model.Office;
+import model.UF;;
 
 public class MemberDao extends Dao {
 
 	private static final String CLASS_NAME = "MemberDao";
-	private static final String NULL_MEMBER = "Erro, objeto de Membro não pode ser nullo.";
+	private static final String NULL_MEMBER = "Erro, objeto de Membro não pode ser nulo.";
 	private static final String EXISTS_ID = "Impossível registrar, id já cadastrada.";
 	private Member member;
 
@@ -57,6 +60,39 @@ public class MemberDao extends Dao {
 					data.getString("situation"));
 			
 			members.addElement(member);
+		}
+		
+		return members;
+	}
+	
+	/**
+	 * Method to return all requester members
+	 * @return Vector<Member> All active members
+	 * @throws SQLException
+	 * @throws UfException
+	 * @throws MemberException
+	 * @throws AddressException
+	 */
+	public static ArrayList<Member> requesterMembers() throws SQLException, UfException, MemberException, AddressException{
+		final String query = "SELECT MEMBER.id, MEMBER.name, MEMBER.birthdate, MEMBER.password, "
+				+ "MEMBER.phone, MEMBER.dad_phone, MEMBER.degree, MEMBER.situation, ADDRESS.street, ADDRESS.number, ADDRESS.complement, "
+				+ "ADDRESS.zip_code, CITY.name as city_name, CITY.initials FROM "
+				+ "MEMBER INNER JOIN ADDRESS ON MEMBER.address_code = ADDRESS.code "
+				+ "INNER JOIN CITY ON CITY.code = ADDRESS.city_code " + "WHERE MEMBER.situation = 'Pendente'";
+		
+		ResultSet data = Dao.executeQuery(query);
+		
+		ArrayList<Member> members = new ArrayList<Member>();
+		while (data.next()) {
+			Member member = null;
+			UF uf = new UF(data.getString("initials"));
+			Address address = new Address(data.getString("street"), data.getInt("number"), data.getString("complement"),
+					data.getString("zip_code"), data.getString("city_name"), uf);
+			member = new Member(data.getInt("id"), data.getString("name"), data.getDate("birthdate"), data.getString("password"),
+					data.getString("phone"), data.getString("dad_phone"), address, data.getString("degree"),
+					data.getString("situation"));
+			
+			members.add(member);
 		}
 		
 		return members;
@@ -217,7 +253,27 @@ public class MemberDao extends Dao {
 
 		return lastId(query);
 	}
-
+	
+	public void approveMember(Member newMember, long codeUser) throws SQLException {
+		final String memberQuery = "UPDATE member SET situation = 'Ativo', approved_by = " + codeUser + " WHERE id = " + this.getMember().getId();
+		
+		try {
+			Dao.executeUpdate(memberQuery);
+		} catch (Exception e) {
+			// Nothing to do
+		}
+	}
+	
+	public void rejectMember(Member newMember, long codeUser) throws SQLException {
+		final String memberQuery = "UPDATE member SET situation = 'Recusado', approved_by = " + codeUser + " WHERE id = " + this.getMember().getId();
+		
+		try {
+			Dao.executeUpdate(memberQuery);
+		} catch (Exception e) {
+			// Nothing to do
+		}
+	}
+			
 	/**
 	 * @return the member
 	 */

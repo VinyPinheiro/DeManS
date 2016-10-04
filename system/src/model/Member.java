@@ -29,7 +29,7 @@ public class Member {
 	public static final String INVALID_PHONE = "Telefone não esta no formato solicitado";
 	public static final String NULL_DAD_PHONE = "telefone do pai não pode ser nulo";
 	public static final String INVALID_DAD_PHONE = "telefone do pai não esta no formato solicitado";
-	public static final String INVALID_DEGREE = "Grau inválido, use apenas('Iniciático', 'DeMolay', 'Maçom')";
+	public static final String INVALID_DEGREE = "Grau invalido, use apenas('Iniciático', 'DeMolay', 'Maçom')";
 	public static final String INVALID_SITUATION = "Situação inválida, use apenas('Ativo', 'Irregular', 'Sênior')";
 
 	// Attributes
@@ -72,8 +72,13 @@ public class Member {
 		setPhone(phone);
 		setDad_phone(dad_phone);
 		setAddress(address);
-		setDegree("Iniciático");
-		setSituation("Ativo");
+		setDegree("Iniciatico");
+		setSituation("Pendente");
+	}
+	
+	public Member(Integer id, String situation) throws MemberException {
+		setId(id);
+		setSituation(situation);
 	}
 
 	/**
@@ -93,7 +98,7 @@ public class Member {
 	 * @param address
 	 *            not null Address
 	 * @param degree
-	 *            Not null String ('Iniciático', 'DeMolay', 'Maçom')
+	 *            Not null String ('Iniciatico', 'DeMolay', 'Macom')
 	 * @param situation
 	 *            Not Null or String('Ativo', 'Irregular', 'Sênior')
 	 * @throws MemberException
@@ -233,7 +238,7 @@ public class Member {
 	}
 
 	public void setDegree(String degree) throws MemberException {
-		final String[] options = { "Iniciático", "DeMolay", "Maçom" };
+		final String[] options = { "Iniciatico", "DeMolay", "Macom" };
 		if (Arrays.asList(options).contains(degree)) {
 			this.degree = degree;
 		} else {
@@ -246,7 +251,7 @@ public class Member {
 	}
 
 	public void setSituation(String situation) throws MemberException {
-		final String[] options = { "Ativo", "Irregular", "Sênior" };
+		final String[] options = { "Ativo", "Irregular", "Senior", "Pendente", "Recusado" };
 		if (Arrays.asList(options).contains(situation)) {
 			this.situation = situation;
 		} else {
