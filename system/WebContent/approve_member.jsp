@@ -20,7 +20,7 @@
 		ArrayList<Member> requesterMembers = MemberDao.requesterMembers();
 		out.print("<label>"+"Tamanho da lista: " + requesterMembers.size()+"</label><br>");
 	%>
-	
+		
 	<form method="POST" action="approveMember">
 		<fieldset>
 			<legend>Aprovação de Membros para cadastro no sistema</legend>
@@ -35,13 +35,15 @@
 					out.print("<td>"+requesterMembers.get(i).getAddress().toString()+"</td>");
 					out.print("<td>"+requesterMembers.get(i).getPhone()+"</td>");
 					out.print("<th>"+requesterMembers.get(i).getSituation()+"</th>");
-					out.print("<td><input type='submit' id='acceptMember' name='approve' value='Aceitar'></td>");
-					out.print("<td><input type='submit' id='rejectMember' name='approve' value='Recusar'></td>");
+					out.print("<td><button type='submit' name='approve' value='Aceitar"+i+"''>Aceitar</button></td>");
+					out.print("<td><button type='submit' name='approve' value='Recusar"+i+"''>Recusar</button></td>");
 					out.print("</tr>");
-					
-					int idMember = requesterMembers.get(i).getId();
-					request.getSession().setAttribute("idMember", idMember);
+														
 				}
+				
+				int i = 1;
+				request.getSession().setAttribute("positionMember", i);
+				request.getSession().setAttribute("requesterMembers", requesterMembers);
 				out.print("</table>");
 				
 				// Get the user id that approved the request pending registration.
@@ -55,7 +57,7 @@
 				}
 				
 			%>
-			
+									
 		</fieldset>
 	</form>
 </body>
