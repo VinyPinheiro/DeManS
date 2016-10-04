@@ -97,6 +97,39 @@ public class MemberDao extends Dao {
 		
 		return members;
 	}
+	
+	/**
+	 * Method to return all  members
+	 * @return Vector<Member> All members
+	 * @throws SQLException
+	 * @throws UfException
+	 * @throws MemberException
+	 * @throws AddressException
+	 */
+	public static ArrayList<Member> allMembers() throws SQLException, UfException, MemberException, AddressException{
+		final String query = "SELECT MEMBER.id, MEMBER.name, MEMBER.birthdate, MEMBER.password, "
+				+ "MEMBER.phone, MEMBER.dad_phone, MEMBER.degree, MEMBER.situation, ADDRESS.street, ADDRESS.number, ADDRESS.complement, "
+				+ "ADDRESS.zip_code, CITY.name as city_name, CITY.initials FROM "
+				+ "MEMBER INNER JOIN ADDRESS ON MEMBER.address_code = ADDRESS.code "
+				+ "INNER JOIN CITY ON CITY.code = ADDRESS.city_code ";
+		
+		ResultSet data = Dao.executeQuery(query);
+		
+		ArrayList<Member> members = new ArrayList<Member>();
+		while (data.next()) {
+			Member member = null;
+			UF uf = new UF(data.getString("initials"));
+			Address address = new Address(data.getString("street"), data.getInt("number"), data.getString("complement"),
+					data.getString("zip_code"), data.getString("city_name"), uf);
+			member = new Member(data.getInt("id"), data.getString("name"), data.getDate("birthdate"), data.getString("password"),
+					data.getString("phone"), data.getString("dad_phone"), address, data.getString("degree"),
+					data.getString("situation"));
+			
+			members.add(member);
+		}
+		
+		return members;
+	}
 
 	/**
 	 * 

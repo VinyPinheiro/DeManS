@@ -68,6 +68,18 @@
 	<url-pattern>/approveMember</url-pattern>  
   </servlet-mapping> 
   
+  
+     <!-- Mapeamento da Servlet para Pesquisar Membros -->
+  <servlet>  
+	<servlet-name>controller_SearchMember</servlet-name>  
+	<servlet-class>controller.SearchMember</servlet-class>  
+  </servlet>  
+	  
+  <servlet-mapping>  
+	<servlet-name>controller_SearchMember</servlet-name>  
+	<url-pattern>/searchMember</url-pattern>  
+  </servlet-mapping> 
+  
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
