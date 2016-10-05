@@ -39,29 +39,37 @@ public class SearchMember extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
+		String error = null;
 				
 		try {		
-			String searchName1 = request.getParameter("searchName");
-			String searchName = searchName1.toUpperCase();
-			System.out.println("searchName = " + searchName);
-			
-			ArrayList<Member> allMembers = MemberDao.allMembers();
-			System.out.println("allMembers = "+ allMembers.size());
-			
-			if(searchName.isEmpty()){
+			String paramSearchName = request.getParameter("searchName");
+			if(paramSearchName.equals("")){
 				//Nothing to do.
+				error = "Nome vazio.";
+			} else if(paramSearchName.length() < 3) {
+				//Nothing to do.
+				error = "O Nome deve ter no mínimo 3 caracteres.";
 			} else {
+				String searchName = paramSearchName.toUpperCase();
+				System.out.println("searchName = " + searchName);
+				
+				ArrayList<Member> allMembers = MemberDao.allMembers();
+				System.out.println("allMembers = "+ allMembers.size());
+			
+			
 				List<Member> listMemberFound = searchByName(allMembers, searchName);
 				System.out.println("listMemberFound = "+ listMemberFound);
 				
 				request.getSession().setAttribute("listMemberFound", listMemberFound);
-				RequestDispatcher rs = request.getRequestDispatcher("view_member.jsp");
-				rs.forward(request, response); 
+				 
 			}
+			request.getSession().setAttribute("error", error);
+			RequestDispatcher rs = request.getRequestDispatcher("view_member.jsp");
+			rs.forward(request, response);
 										
 		} catch (NumberFormatException e) {
-			final String error = "<script>alert('Erro ao Pesquisar Membro por Nome.'); history.go(-1);</script>";
-			out.print(error);
+			final String errorExNumber = "<script>alert('Erro ao Pesquisar Membro por Nome.'); history.go(-1);</script>";
+			out.print(errorExNumber);
 			e.printStackTrace();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

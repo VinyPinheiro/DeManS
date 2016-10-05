@@ -48,10 +48,14 @@
 					  <%					    
 							// List of pending registrations.
 							ArrayList<Member> listMembersFound = (ArrayList<Member>) request.getSession().getAttribute("listMemberFound");
-						System.out.println("listMembersFound = "+ listMembersFound);
-					  		if(listMembersFound == null){
+							System.out.println("listMembersFound = "+ listMembersFound);
+							
+							String error = String.valueOf(request.getSession().getAttribute("error"));
+					  															
+					  		if(listMembersFound.size() == 0){
 								out.print("<td><center>Sem resultado!</center></td>");
-								
+					  		} else if(!error.equals("null")){
+					  			out.print("<td><center>"+error+"</center></td>");							
 							} else {
 								for (Member member : listMembersFound) {
 											
@@ -62,6 +66,7 @@
 									out.print("</tr>");												
 								}		
 							}
+							
 					  %>
 				 </table>
 			 </div>
