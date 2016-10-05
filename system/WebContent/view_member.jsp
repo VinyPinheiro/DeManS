@@ -14,27 +14,32 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Consulta Membros</title>
 </head>
-	<script> function valida(form){}
-				 if (form.searchMember.value.length < 3) {
-					 alert("Preencha o campo com pelo menos 3 caracteres.");
-					 form.searchName.focus();
-					 return false;
-				 }
-			}
-	</script>
 <body>
 	 <div>
 	 	<%@ include file="header.jsp" %>
 	 </div>
 	 
-	 <form method="POST" action="searchMember" onsubmit="return valida(this);">
+	 <form method="POST" action="searchMember">
 		 <fieldset>
-		 	<legend>Pesquisa por nome</legend>
+		 	<legend>Pesquisa por Nome</legend>
 			 <div>
 			 	<table style='width:100%'>
 					 <tr>
 						 <td><input type="text" name="searchName"></td>
-						 <td><button type="submit" value="pesquisar">Pesquisar</button></td>
+						 <td><button type="submit" name="operation" value="searchByName">Pesquisar</button></td>
+					 </tr>
+				</table>
+			 </div>
+		 </fieldset>
+	 </form>
+	 <form method="POST" action="searchMember">
+		 <fieldset>
+		 	<legend>Pesquisa por Id</legend>
+			 <div>
+			 	<table style='width:100%'>
+					 <tr>
+						 <td><input type="text" name="searchId"></td>
+						 <td><button type="submit" name="operation" value="searchById">Pesquisar</button></td>
 					 </tr>
 				</table>
 			 </div>
@@ -52,7 +57,7 @@
 							
 							String error = String.valueOf(request.getSession().getAttribute("error"));
 					  															
-					  		if(listMembersFound.size() == 0){
+					  		if(listMembersFound == null || listMembersFound.size() == 0){
 								out.print("<td><center>Sem resultado!</center></td>");
 					  		} else if(!error.equals("null")){
 					  			out.print("<td><center>"+error+"</center></td>");							

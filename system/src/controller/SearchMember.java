@@ -40,29 +40,53 @@ public class SearchMember extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String error = null;
+		String searchName = null;
 				
-		try {		
-			String paramSearchName = request.getParameter("searchName");
-			if(paramSearchName.equals("")){
-				//Nothing to do.
-				error = "Nome vazio.";
-			} else if(paramSearchName.length() < 3) {
-				//Nothing to do.
-				error = "O Nome deve ter no mínimo 3 caracteres.";
+		try {	
+			
+			ArrayList<Member> allMembers = MemberDao.allMembers();
+			System.out.println("allMembers = "+ allMembers.size());
+			List<Member> listMemberFound = null;
+			
+			String paramOperation = request.getParameter("operation");
+			System.out.println("paramOperation = "+ paramOperation);
+			
+			if(paramOperation.equals("searchById")){
+				String paramSearchId = request.getParameter("searchId");
+				if(paramSearchId.equals("")){
+					//Nothing to do.
+					error = "Id vazio.";
+				} else if(paramSearchId.length() < 3) {
+					//Nothing to do.
+					error = "O Id deve ter no mínimo 3 caracteres.";
+				} else {	
+					int searchId = Integer.parseInt(paramSearchId);
+					System.out.println("searchId = " + searchId);
+					listMemberFound = searchById(allMembers, searchId);
+				}
+				
+			} else if(paramOperation.equals("searchByName")){
+				String paramSearchName = request.getParameter("searchName");
+				if(paramSearchName.equals("")){
+					//Nothing to do.
+					error = "Nome vazio.";
+				} else if(paramSearchName.length() < 3) {
+					//Nothing to do.
+					error = "O Nome deve ter no mínimo 3 caracteres.";
+				} else {
+					searchName = paramSearchName.toUpperCase();
+					System.out.println("searchName = " + searchName);
+					listMemberFound = searchByName(allMembers, searchName);
+				}
+				
 			} else {
-				String searchName = paramSearchName.toUpperCase();
-				System.out.println("searchName = " + searchName);
-				
-				ArrayList<Member> allMembers = MemberDao.allMembers();
-				System.out.println("allMembers = "+ allMembers.size());
-			
-			
-				List<Member> listMemberFound = searchByName(allMembers, searchName);
-				System.out.println("listMemberFound = "+ listMemberFound);
-				
-				request.getSession().setAttribute("listMemberFound", listMemberFound);
-				 
+				// Nothing to do.
 			}
+			
+			System.out.println("listMemberFound = "+ listMemberFound);
+				
+			request.getSession().setAttribute("listMemberFound", listMemberFound);
+				 
 			request.getSession().setAttribute("error", error);
 			RequestDispatcher rs = request.getRequestDispatcher("view_member.jsp");
 			rs.forward(request, response);
@@ -90,18 +114,13 @@ public class SearchMember extends HttpServlet {
 	 * Method to search by a member's name.
 	 */
 	public static List<Member> searchByName(ArrayList<Member> listMembers, String partOfName){
-		int numberOfResults = 0;
 		List<Member> researchedMembers = new ArrayList<Member>();
 		
 		System.out.println("DentroMetodo - listMembers = "+ listMembers.size());
 		
-		
 	    for (int aux=0; aux < listMembers.size(); aux++) {
-	    	// == 
 	    	  String name = listMembers.get(aux).getName().toUpperCase();
-		      if (name.contains(partOfName.toUpperCase())) {
-		    	  numberOfResults++;
-		    	  System.out.println("DentroMetodo - numberOfResults = "+ numberOfResults);
+		      if (name.contains(partOfName)) {
 		    	 researchedMembers.add(listMembers.get(aux));
 		    	 System.out.println("DentroMetodo - researchedMembers = "+ researchedMembers.size());
 		      }else{
@@ -111,30 +130,24 @@ public class SearchMember extends HttpServlet {
 		return researchedMembers;
 	}
 	
-	/*public static void searchById(String id){
-		int cont=0;
+	/*
+	 * Method to search by a member's id.
+	 */
+	public static List<Member> searchById(ArrayList<Member> listMembers, int idMember){
+		List<Member> researchedMembers = new ArrayList<Member>();
 		
-			if (Principal.posto.size() == 0){
-				JOptionPane.showMessageDialog(null, "N�o h� pessoas cadastradas");
-			}else{			
-				if(Servicos.isCpf(numCpf)){
-					for (Pessoa pes : Principal.posto) {
-				        if (pes.getCpf().equals(numCpf)) {
-				        	if(pes.toString().contains("Masculino"))
-				        		JOptionPane.showMessageDialog(null, "Nome: "+pes.getNome()+"\nCPF: "
-							        + pes.getCpf() +"\nData Vacina:"+ pes.getDataVacina() + "\nSexo: Masculino" + "\nEstado Civil: " + pes.getDadoPessoa(), "Consulta Pessoa", JOptionPane.PLAIN_MESSAGE);
-				        	else
-				        		JOptionPane.showMessageDialog(null, "Nome: "+pes.getNome()+"\nCPF: "
-								        + pes.getCpf() +"\nData Vacina:"+ pes.getDataVacina() + "\nSexo: Feminino" + "\nQuantidade Gravidez: " + pes.getDadoPessoa() , "Consulta Pessoa", JOptionPane.PLAIN_MESSAGE);
-				        }else{
-				        	cont++;
-				        }
-				    }
-					if(cont >= Principal.posto.size())
-						JOptionPane.showMessageDialog(null, "Registro n�o localizado!");
-				}else
-					JOptionPane.showOptionDialog(null, "CPF invalido", "Erro", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
-			}
-	} */
-
+		System.out.println("DentroMetodo - listMembers = "+ listMembers.size());
+		
+	    for (int aux=0; aux < listMembers.size(); aux++) {
+	    	  int id = listMembers.get(aux).getId();
+		      if (id == idMember) {
+		    	 researchedMembers.add(listMembers.get(aux));
+		      }else{
+		    	  //Nothing to do
+		      }
+	    }
+	    System.out.println("DentroMetodo - researchedMembers = "+ researchedMembers.size());
+		return researchedMembers;
+	}
+	
 }
