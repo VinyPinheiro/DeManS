@@ -41,15 +41,23 @@ public class SearchMember extends HttpServlet {
 		PrintWriter out = response.getWriter();
 				
 		try {		
-			String searchName = request.getParameter("searchName");
+			String searchName1 = request.getParameter("searchName");
+			String searchName = searchName1.toUpperCase();
 			System.out.println("searchName = " + searchName);
+			
 			ArrayList<Member> allMembers = MemberDao.allMembers();
 			System.out.println("allMembers = "+ allMembers.size());
-			List<Member> listMemberFound = searchByName(allMembers, searchName);
-			System.out.println("listMemberFound = "+ listMemberFound);
-			request.getSession().setAttribute("listMemberFound", listMemberFound);
-			RequestDispatcher rs = request.getRequestDispatcher("view_member.jsp");
-			rs.forward(request, response); 
+			
+			if(searchName.isEmpty()){
+				//Nothing to do.
+			} else {
+				List<Member> listMemberFound = searchByName(allMembers, searchName);
+				System.out.println("listMemberFound = "+ listMemberFound);
+				
+				request.getSession().setAttribute("listMemberFound", listMemberFound);
+				RequestDispatcher rs = request.getRequestDispatcher("view_member.jsp");
+				rs.forward(request, response); 
+			}
 										
 		} catch (NumberFormatException e) {
 			final String error = "<script>alert('Erro ao Pesquisar Membro por Nome.'); history.go(-1);</script>";
@@ -82,7 +90,8 @@ public class SearchMember extends HttpServlet {
 		
 	    for (int aux=0; aux < listMembers.size(); aux++) {
 	    	// == 
-		      if (listMembers.get(aux).getName().contains(partOfName)) {
+	    	  String name = listMembers.get(aux).getName().toUpperCase();
+		      if (name.contains(partOfName.toUpperCase())) {
 		    	  numberOfResults++;
 		    	  System.out.println("DentroMetodo - numberOfResults = "+ numberOfResults);
 		    	 researchedMembers.add(listMembers.get(aux));

@@ -14,13 +14,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Consulta Membros</title>
 </head>
-	
+	<script> function valida(form){}
+				 if (form.searchMember.value.length < 3) {
+					 alert("Preencha o campo com pelo menos 3 caracteres.");
+					 form.searchName.focus();
+					 return false;
+				 }
+			}
+	</script>
 <body>
-	 <div id="top">
+	 <div>
 	 	<%@ include file="header.jsp" %>
 	 </div>
 	 
-	 <form method="POST" action="searchMember">
+	 <form method="POST" action="searchMember" onsubmit="return valida(this);">
 		 <fieldset>
 		 	<legend>Pesquisa por nome</legend>
 			 <div>
@@ -37,19 +44,24 @@
 		 	<legend>Membros cadastrados no Sistema</legend>
 			 <br><br>
 			 <div>
-				 <table style='width:100%'>
-					  <%
-					  
-						// List of pending registrations.
-						ArrayList<Member> listMembersFound = (ArrayList<Member>) request.getSession().getAttribute("listMemberFound");
-						for (Member member : listMembersFound) {
-									
-							out.print("<td>"+member.getId()+"</td>");
-							out.print("<th>"+member.getName()+"</th>");
-							out.print("<td>"+member.getBirthdate()+"</td>");
-							out.print("<th>"+member.getSituation()+"</th>");
-							out.print("</tr>");												
-						}		
+				 <table style='width:80%'>
+					  <%					    
+							// List of pending registrations.
+							ArrayList<Member> listMembersFound = (ArrayList<Member>) request.getSession().getAttribute("listMemberFound");
+						System.out.println("listMembersFound = "+ listMembersFound);
+					  		if(listMembersFound == null){
+								out.print("<td><center>Sem resultado!</center></td>");
+								
+							} else {
+								for (Member member : listMembersFound) {
+											
+									out.print("<td>"+member.getId()+"</td>");
+									out.print("<th>"+member.getName()+"</th>");
+									out.print("<td>"+member.getBirthdate()+"</td>");
+									out.print("<th>"+member.getSituation()+"</th>");
+									out.print("</tr>");												
+								}		
+							}
 					  %>
 				 </table>
 			 </div>
