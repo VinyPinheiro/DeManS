@@ -46,17 +46,16 @@
 		 </fieldset>
 	 </form>
 		 <fieldset>
-		 	<legend>Membros cadastrados no Sistema</legend>
+		 	<legend>Resultado da Pesquisa de Membros</legend>
 			 <br><br>
 			 <div>
-				 <table style='width:80%'>
+				 <table style='width:100%'>
 					  <%					    
 							// List of pending registrations.
-							ArrayList<Member> listMembersFound = (ArrayList<Member>) request.getSession().getAttribute("listMemberFound");
-							System.out.println("listMembersFound = "+ listMembersFound);
-							
+							ArrayList<Member> listMembersFound = (ArrayList<Member>) request.getSession().getAttribute("listMemberFound");							
 							String error = String.valueOf(request.getSession().getAttribute("error"));
-					  															
+					  		
+							// Validation
 					  		if(listMembersFound == null || listMembersFound.size() == 0){
 								out.print("<td><center>Sem resultado!</center></td>");
 					  		} else if(!error.equals("null")){

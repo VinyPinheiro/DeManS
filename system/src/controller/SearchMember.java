@@ -1,7 +1,7 @@
 /*****************************
- * Class name: SearchMember (.java)
+ * Class name: SearchMember (.java) 
  * 
- * Purpose: 
+ * Purpose: Search data members by name or by id.
  *****************************/
 
 package controller;
@@ -20,11 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.MemberDao;
 import exception.AddressException;
-import exception.DaoException;
 import exception.MemberException;
 import exception.UfException;
 import model.Member;
-
+ 
 public class SearchMember extends HttpServlet {
 	
 	/**
@@ -35,46 +34,41 @@ public class SearchMember extends HttpServlet {
 		doPost(request, response);
 	}
 	
+	/**
+	 * Method to receive POST data and verify and send result to client
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String error = null;
-		String searchName = null;
 				
 		try {	
-			
 			ArrayList<Member> allMembers = MemberDao.allMembers();
-			System.out.println("allMembers = "+ allMembers.size());
-			List<Member> listMemberFound = null;
-			
 			String paramOperation = request.getParameter("operation");
-			System.out.println("paramOperation = "+ paramOperation);
+			List<Member> listMemberFound = null;
 			
 			if(paramOperation.equals("searchById")){
 				String paramSearchId = request.getParameter("searchId");
+				// Input validation.
 				if(paramSearchId.equals("")){
-					//Nothing to do.
-					error = "Id vazio.";
+					error = "Id não inserido.";
 				} else if(paramSearchId.length() < 3) {
-					//Nothing to do.
 					error = "O Id deve ter no mínimo 3 caracteres.";
 				} else {	
 					int searchId = Integer.parseInt(paramSearchId);
-					System.out.println("searchId = " + searchId);
 					listMemberFound = searchById(allMembers, searchId);
 				}
 				
 			} else if(paramOperation.equals("searchByName")){
 				String paramSearchName = request.getParameter("searchName");
+				// Input validation.
 				if(paramSearchName.equals("")){
-					//Nothing to do.
 					error = "Nome vazio.";
 				} else if(paramSearchName.length() < 3) {
-					//Nothing to do.
 					error = "O Nome deve ter no mínimo 3 caracteres.";
 				} else {
-					searchName = paramSearchName.toUpperCase();
+					String searchName = paramSearchName.toUpperCase();
 					System.out.println("searchName = " + searchName);
 					listMemberFound = searchByName(allMembers, searchName);
 				}
@@ -82,17 +76,15 @@ public class SearchMember extends HttpServlet {
 			} else {
 				// Nothing to do.
 			}
-			
-			System.out.println("listMemberFound = "+ listMemberFound);
 				
 			request.getSession().setAttribute("listMemberFound", listMemberFound);
-				 
 			request.getSession().setAttribute("error", error);
+			
 			RequestDispatcher rs = request.getRequestDispatcher("view_member.jsp");
 			rs.forward(request, response);
 										
 		} catch (NumberFormatException e) {
-			final String errorExNumber = "<script>alert('Erro ao Pesquisar Membro por Nome.'); history.go(-1);</script>";
+			final String errorExNumber = "<script>alert('Erro ao Pesquisar Membro.'); history.go(-1);</script>";
 			out.print(errorExNumber);
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -116,17 +108,15 @@ public class SearchMember extends HttpServlet {
 	public static List<Member> searchByName(ArrayList<Member> listMembers, String partOfName){
 		List<Member> researchedMembers = new ArrayList<Member>();
 		
-		System.out.println("DentroMetodo - listMembers = "+ listMembers.size());
-		
-	    for (int aux=0; aux < listMembers.size(); aux++) {
-	    	  String name = listMembers.get(aux).getName().toUpperCase();
+		for (Member member : listMembers) {
+	    	  String name = member.getName().toUpperCase();
 		      if (name.contains(partOfName)) {
-		    	 researchedMembers.add(listMembers.get(aux));
-		    	 System.out.println("DentroMetodo - researchedMembers = "+ researchedMembers.size());
-		      }else{
+		    	 researchedMembers.add(member);
+		      } else {
 		    	  //Nothing to do
 		      }
 	    }
+			    
 		return researchedMembers;
 	}
 	
@@ -136,17 +126,15 @@ public class SearchMember extends HttpServlet {
 	public static List<Member> searchById(ArrayList<Member> listMembers, int idMember){
 		List<Member> researchedMembers = new ArrayList<Member>();
 		
-		System.out.println("DentroMetodo - listMembers = "+ listMembers.size());
-		
-	    for (int aux=0; aux < listMembers.size(); aux++) {
-	    	  int id = listMembers.get(aux).getId();
+		for (Member member : listMembers) {
+	    	  int id = member.getId();
 		      if (id == idMember) {
-		    	 researchedMembers.add(listMembers.get(aux));
+		    	 researchedMembers.add(member);
 		      }else{
 		    	  //Nothing to do
 		      }
 	    }
-	    System.out.println("DentroMetodo - researchedMembers = "+ researchedMembers.size());
+			    
 		return researchedMembers;
 	}
 	
