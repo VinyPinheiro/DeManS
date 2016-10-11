@@ -15,17 +15,14 @@
 <title>Consulta Membros</title>
 </head>
 
-<script>
-	function selectMember(member){
-		//opener.document.getElementById('id').value=id;
-		//opener.document.getElementById('name').value=name;
-		window.print("Entro no metodo selectMember");
-		request.getSession().setAttibute("memberView", member);
-		window.print("selectMember: depois do request");
-		RequestDispatcher rs = request.getRequestDispatcher("view_member.jsp");
-		rs.forward(request, response);
-	}
-</script>
+	<% 
+		public static  selectMember(){
+			System.out.println("Entro no metodo selectMember"); 
+			request.getSession().setAttribute("dtMember", member);
+			System.out.println("selectMember: depois do request");
+			RequestDispatcher rs = request.getRequestDispatcher("view_member.jsp");
+			rs.forward(request, response); 
+		} %>
 
 <body>
 	 <div>
@@ -62,7 +59,7 @@
 		 	<legend>Resultado da Pesquisa de Membros</legend>
 			 <br><br>
 			 <div>
-				 <table style='width:60%'>
+				 <table style='width:100%'>
 					  <%					    
 							// List of pending registrations.
 							ArrayList<Member> listMembersFound = (ArrayList<Member>) request.getAttribute("listMemberFound");							
@@ -75,9 +72,8 @@
 					  			out.print("<td><center>"+error+"</center></td>");							
 							} else {
 								for (Member member : listMembersFound) {
-									out.print("<td><a>"+member.getId()+"</a></td>");
-									request.getSession().setAttribute("memberView", member);
-									out.print("<th><a href='view_member.jsp'>"+member.getName()+"</a></th>");
+									out.print("<td><a>"+ member.getId() +"</a></td>");
+									out.print("<td><a href='view_member.jsp' onclick='selectMember("+member+")'>" + member.getName() + "</a></td>");
 									out.print("</tr>");												
 								}		
 							}

@@ -11,7 +11,6 @@
 			String sessionID = null;
 			boolean logado = false;
 			if (session.getAttribute("user") == null) {
-
 				logado = false;
 			} else {
 				logado = true;
@@ -45,7 +44,7 @@
 			<a href="/DeMans/select_nominata.jsp">Alterar Nominata</a> |
 			<a href="/DeMans/approve_member.jsp">Aprovar Membro</a> |
 			<a href="/DeMans/search_member.jsp">Pesquisar Membro</a> 
-			<hr width="70%">
+			<hr width="90%">
 
 		<h3>
 			Logado como

@@ -14,12 +14,10 @@
 	<%@ include file="header.jsp" %>
 	
 	<% 
-		HttpSession secao = request.getSession();
-		//Member member = (Member) secao.getAttribute("memberView");
+		//HttpSession secao = request;
+		Member member = (Member) request.getSession().getAttribute("dtMember");
 		
-		ArrayList<Member> listMembersFound = (ArrayList<Member>) request.getAttribute("listMemberFound");
-		int memberId = Integer.parseInt(String.valueOf(request.getAttribute("memberClick")));
-		Member member = listMembersFound.get(memberId);
+		//ArrayList<Member> listMembersFound = (ArrayList<Member>) request.getAttribute("listMemberFound");
 	%>
 
 	<fieldset>
