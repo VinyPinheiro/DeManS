@@ -50,13 +50,13 @@ public class SearchMember extends HttpServlet {
 			
 			if(paramOperation.equals("searchById")){
 				String paramSearchId = request.getParameter("searchId");
+				int searchId = Integer.parseInt(paramSearchId);
 				// Input validation.
 				if(paramSearchId.equals("")){
-					error = "Id não inserido.";
-				} else if(paramSearchId.length() < 3) {
-					error = "O Id deve ter no mínimo 3 caracteres.";
+					error = "Preencha um dos campos de pesquisa.";
+				} else if(searchId < 0) {
+					error = "O ID não pode ser negativo.";
 				} else {	
-					int searchId = Integer.parseInt(paramSearchId);
 					listMemberFound = searchById(allMembers, searchId);
 				}
 				
@@ -64,9 +64,9 @@ public class SearchMember extends HttpServlet {
 				String paramSearchName = request.getParameter("searchName");
 				// Input validation.
 				if(paramSearchName.equals("")){
-					error = "Nome vazio.";
+					error = "Preencha um dos campos de pesquisa.";
 				} else if(paramSearchName.length() < 3) {
-					error = "O Nome deve ter no mínimo 3 caracteres.";
+					error = "Digite ao menos 3 letras.";
 				} else {
 					String searchName = paramSearchName.toUpperCase();
 					System.out.println("searchName = " + searchName);
@@ -77,10 +77,10 @@ public class SearchMember extends HttpServlet {
 				// Nothing to do.
 			}
 				
-			request.getSession().setAttribute("listMemberFound", listMemberFound);
+			request.setAttribute("listMemberFound", listMemberFound);
 			request.getSession().setAttribute("error", error);
 			
-			RequestDispatcher rs = request.getRequestDispatcher("view_member.jsp");
+			RequestDispatcher rs = request.getRequestDispatcher("search_member.jsp");
 			rs.forward(request, response);
 										
 		} catch (NumberFormatException e) {

@@ -1,81 +1,84 @@
+<%@page import="java.sql.Date"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    
-<%@page import="java.io.IOException"%>
-<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="model.Member"%>
-<%@page import="java.util.List"%>
-<%@ page import="dao.MemberDao"%>
-<%@ page import="java.util.ArrayList"%>
+<%@page import="java.util.ArrayList"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Consulta Membros</title>
+<meta charset="UTF-8">
+<title>DeManS - Visualizar Membro</title>
 </head>
 <body>
-	 <div>
-	 	<%@ include file="header.jsp" %>
-	 </div>
-	 
-	 <form method="POST" action="searchMember">
-		 <fieldset>
-		 	<legend>Pesquisa por Nome</legend>
-			 <div>
-			 	<table style='width:100%'>
-					 <tr>
-						 <td><input type="text" name="searchName"></td>
-						 <td><button type="submit" name="operation" value="searchByName">Pesquisar</button></td>
-					 </tr>
-				</table>
-			 </div>
-		 </fieldset>
-	 </form>
-	 <form method="POST" action="searchMember">
-		 <fieldset>
-		 	<legend>Pesquisa por Id</legend>
-			 <div>
-			 	<table style='width:100%'>
-					 <tr>
-						 <td><input type="text" name="searchId"></td>
-						 <td><button type="submit" name="operation" value="searchById">Pesquisar</button></td>
-					 </tr>
-				</table>
-			 </div>
-		 </fieldset>
-	 </form>
-		 <fieldset>
-		 	<legend>Resultado da Pesquisa de Membros</legend>
-			 <br><br>
-			 <div>
-				 <table style='width:100%'>
-					  <%					    
-							// List of pending registrations.
-							ArrayList<Member> listMembersFound = (ArrayList<Member>) request.getSession().getAttribute("listMemberFound");							
-							String error = String.valueOf(request.getSession().getAttribute("error"));
-					  		
-							// Validation
-					  		if(listMembersFound == null || listMembersFound.size() == 0){
-								out.print("<td><center>Sem resultado!</center></td>");
-					  		} else if(!error.equals("null")){
-					  			out.print("<td><center>"+error+"</center></td>");							
-							} else {
-								for (Member member : listMembersFound) {
-											
-									out.print("<td>"+member.getId()+"</td>");
-									out.print("<th>"+member.getName()+"</th>");
-									out.print("<td>"+member.getBirthdate()+"</td>");
-									out.print("<th>"+member.getSituation()+"</th>");
-									out.print("</tr>");												
-								}		
-							}
-							
-					  %>
-				 </table>
-			 </div>
-		 </fieldset>
+	<%@ include file="header.jsp" %>
 	
+	<% 
+		HttpSession secao = request.getSession();
+		//Member member = (Member) secao.getAttribute("memberView");
+		
+		ArrayList<Member> listMembersFound = (ArrayList<Member>) request.getAttribute("listMemberFound");
+		int memberId = Integer.parseInt(String.valueOf(request.getAttribute("memberClick")));
+		Member member = listMembersFound.get(memberId);
+	%>
 
+	<fieldset>
+		<legend>
+				Dados do Membro
+		</legend>
+			<table>
+				<tr>
+					<td><b>ID:</b> &nbsp;&nbsp;<%=member.getId()%></td>
+				</tr>
+				<tr>
+					<td><b>Nome:</b> &nbsp;&nbsp;<%=member.getName()%></td>
+				</tr>
+				<tr>
+					<td><b>Data de Nascimento:</b>&nbsp;&nbsp; <%=String.valueOf(member.getBirthdate())%></td>
+				</tr>			
+				<tr>
+					<td><b>Telefone:</b>  &nbsp;&nbsp;<%=member.getPhone()%></td>	
+				</tr>
+				<tr>
+					<td><b>Telefone (Responsável):</b>  &nbsp;&nbsp;<%=member.getDad_phone()%></td>	
+				</tr>
+				<tr>
+					<td><b>Endereço:</b> &nbsp;&nbsp;<%=member.getAddress()%></td>
+				</tr>
+				<tr>
+					<td><b>Cidade:</b>&nbsp;&nbsp;<%=member.getAddress().getCity()%></td>
+				</tr>
+				<tr>
+					<td><b>Aprovado por:</b>&nbsp;&nbsp;<%=member.getId()%>
+				</tr>
+				<tr>
+						<%if(member.getDegree().equalsIgnoreCase("Iniciatico")){%>
+							<td><b>Grau:</b>&nbsp;&nbsp; Iniciático </td>
+						<%} else if(member.getDegree().equalsIgnoreCase("Demolay")){%>
+							<td><b>Grau:</b>&nbsp;&nbsp; Demolay </td>
+						<%} else if(member.getDegree().equalsIgnoreCase("Macom")){%>
+							<td><b>Grau:</b>&nbsp;&nbsp; Maçom </td>
+						<%} else {%>
+							<td><b>Grau:</b>&nbsp;&nbsp; Não especificado. </td>
+						<%}%>
+				</tr>	
+				<!-- Situação -->
+				<tr>
+						<%if(member.getSituation().equalsIgnoreCase("Ativo")){%>
+							<td><b>Situação:</b>&nbsp;&nbsp; Ativo </td>
+						<%} else if(member.getSituation().equalsIgnoreCase("Irregular")){%>
+							<td><b>Situação:</b>&nbsp;&nbsp; Irregular </td>
+						<%} else if(member.getSituation().equalsIgnoreCase("Senior")){%>
+							<td><b>Situação:</b>&nbsp;&nbsp; Senior </td>
+						<%} else if(member.getSituation().equalsIgnoreCase("Pendente")){%>
+							<td><b>Situação:</b>&nbsp;&nbsp; Pendente </td>
+						<%} else if(member.getSituation().equalsIgnoreCase("Recusado")){%>
+							<td><b>Situação:</b>&nbsp;&nbsp; Recusado </td>
+						<%} else { %>
+							<td><b>Situação:</b>&nbsp;&nbsp; Não especificado. </td>
+						<%}%>
+				</tr>	
+			</table>
+	</fieldset>
 </body>
 </html>

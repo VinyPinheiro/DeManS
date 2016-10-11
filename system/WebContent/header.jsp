@@ -41,10 +41,10 @@
 			} else {
 		%>
 
-			<a href="/DeMans/register_nominata.jsp">Cadastrar Nova Nominata</a> |
+			<a href="/DeMans/register_nominata.jsp">Cadastrar Nominata</a> |
 			<a href="/DeMans/select_nominata.jsp">Alterar Nominata</a> |
 			<a href="/DeMans/approve_member.jsp">Aprovar Membro</a> |
-			<a href="/DeMans/view_member.jsp">Visualizar Membro</a> 
+			<a href="/DeMans/search_member.jsp">Pesquisar Membro</a> 
 			<hr width="70%">
 
 		<h3>
